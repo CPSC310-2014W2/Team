@@ -1,0 +1,3 @@
+# Module foodonwheels
+# RPC service class, partial path of RPC policy file
+com.google.gwt.foodonwheels.client.GreetingService, C5015046C409D7A0453823431F5A9711.gwt.rpc
