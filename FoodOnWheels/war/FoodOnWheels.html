@@ -22,6 +22,7 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       testAPI();
+      //console.log(response.authResponse.accessToken);
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -42,6 +43,7 @@
       statusChangeCallback(response);
     });
   }
+
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '892727724112644',
@@ -50,42 +52,43 @@
     });
   };
 
-  (function(d, s, id){
-     var js, fjs = d.getElementsByTagName(s)[0];
-     if (d.getElementById(id)) {return;}
-     js = d.createElement(s); js.id = id;
-     js.src = "//connect.facebook.net/en_US/sdk.js";
-     fjs.parentNode.insertBefore(js, fjs);
-   }(document, 'script', 'facebook-jssdk'));
+  // Load the SDK asynchronously
+  (function(d, s, id) {
+    var js, fjs = d.getElementsByTagName(s)[0];
+    if (d.getElementById(id)) return;
+    js = d.createElement(s); js.id = id;
+    js.src = "//connect.facebook.net/en_US/sdk.js";
+    fjs.parentNode.insertBefore(js, fjs);
+  }(document, 'script', 'facebook-jssdk'));
    
    function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
     FB.api('/me', function(response) {
       console.log('Successful login for: ' + response.name);
-      document.getElementById('status').innerHTML =
-        'Thanks for logging in, ' + response.name + '!';
+      document.getElementById('status').innerHTML = 'Thanks for logging in, ' + response.name + '!';
     });
 	function fbLogout() {
         FB.logout(function (response) {
             //Do what ever you want here when logged out like reloading the page
             window.location.reload();
+            (document.getElementById('status').innerHTML = 'Now you are logged ' +
+        'out of Facebook!';
         });
     }
   }
 </script>
-<span id="fbLogout" onclick="fbLogout()"><a class="fb_button fb_button_medium"><span class="fb_button_text">Logout</span></a></span>
 
 <div class="container">
   <div class="jumbotron">
     <h1>Food On Wheels</h1>
     <p>Find great food vendors in Vancouver!</p> 
-      <button type="button" class="btn btn-default btn-sm">Log in</button>
-      <button type="button" class="btn btn-info btn-sm">Google</button> 
+      <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" size="large" auto_logout_link="true"></fb:login-button>
   </div>
   <div class="row">
     <div class="col-sm-7">
       <h3>Vancouver Map:</h3>
       <p>Going to figure out how to put a map...</p>
+      <button type="button" class="btn btn-info btn-sm">Google</button>
     </div>
     <div class="col-sm-5">
       <h3>Food Vendor list:</h3>
@@ -93,8 +96,6 @@
     </div>
     </div>
   </div>
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
 
 <div id="status">
 </div>
