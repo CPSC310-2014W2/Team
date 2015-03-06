@@ -8,8 +8,19 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
 </head>
+<!--Added for map-->
+    <style>
+      #map-canvas {
+        width: 500px;
+        height: 400px;
+         background-color: #CCC;       
+      }
+    </style>
+ <!--Added for map-->
 <body>
 <script>
+
+
 
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -86,6 +97,9 @@
     <div class="col-sm-7">
       <h3>Vancouver Map:</h3>
       <p>Going to figure out how to put a map...</p>
+      <!--Added for map-->
+      <div id="map-canvas"></div>
+      <!--Added for map-->
     </div>
     <div class="col-sm-5">
       <h3>Food Vendor list:</h3>
