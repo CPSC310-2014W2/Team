@@ -73,13 +73,12 @@
     }
   }
 </script>
-<span id="fbLogout" onclick="fbLogout()"><a class="fb_button fb_button_medium"><span class="fb_button_text">Logout</span></a></span>
 
 <div class="container">
   <div class="jumbotron">
     <h1>Food On Wheels</h1>
     <p>Find great food vendors in Vancouver!</p> 
-      <button type="button" class="btn btn-default btn-sm">Log in</button>
+	<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" size="large" show_faces="false" auto_logout_link="true"></fb:login-button>
       <button type="button" class="btn btn-info btn-sm">Google</button> 
   </div>
   <div class="row">
@@ -93,8 +92,6 @@
     </div>
     </div>
   </div>
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
 
 <div id="status">
 </div>
