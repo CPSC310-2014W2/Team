@@ -15,6 +15,10 @@ public class FoodTruck implements Serializable {
 	private String cuisine;
 	private String hours;
 	private String website;
+	
+	public FoodTruck(String name, String address, String location) {
+		
+	}
 
 	public FoodTruck(String name, String address, String phone, String cuisine,
 			String hours, String website) {
