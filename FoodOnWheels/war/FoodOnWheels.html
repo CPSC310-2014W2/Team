@@ -1,15 +1,20 @@
 <!DOCTYPE html>
 <html lang="en">
 <head>
-  <title>Food On Wheels</title>
-  <meta charset="utf-8">
-  <meta name="viewport" content="width=device-width, initial-scale=1">
-  <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
-  <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
-  <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<title>Food On Wheels</title>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<link rel="stylesheet"
+	href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
+<script
+	src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
+<script
+	src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
+<script type="text/javascript" language="javascript"
+	src="foodonwheels/foodonwheels.nocache.js"></script>
 </head>
 <body>
-<script>
+	<script>
 
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -73,30 +78,43 @@
     }
   }
 </script>
-<span id="fbLogout" onclick="fbLogout()"><a class="fb_button fb_button_medium"><span class="fb_button_text">Logout</span></a></span>
+	<span id="fbLogout" onclick="fbLogout()"><a
+		class="fb_button fb_button_medium"><span class="fb_button_text">Logout</span></a></span>
 
-<div class="container">
-  <div class="jumbotron">
-    <h1>Food On Wheels</h1>
-    <p>Find great food vendors in Vancouver!</p> 
-      <button type="button" class="btn btn-default btn-sm">Log in</button>
-      <button type="button" class="btn btn-info btn-sm">Google</button> 
-  </div>
-  <div class="row">
-    <div class="col-sm-7">
-      <h3>Vancouver Map:</h3>
-      <p>Going to figure out how to put a map...</p>
-    </div>
-    <div class="col-sm-5">
-      <h3>Food Vendor list:</h3>
-      <p>Going to have a table containing the list and button / click filter function...</p>
-    </div>
-    </div>
-  </div>
-<fb:login-button scope="public_profile,email" onlogin="checkLoginState();">
-</fb:login-button>
+	<div class="container">
+		<div class="jumbotron">
+			<h1>Food On Wheels</h1>
+			<p>Find great food vendors in Vancouver!</p>
+			<button type="button" class="btn btn-default btn-sm">Log in</button>
+			<button type="button" class="btn btn-info btn-sm">Google</button>
+		</div>
 
-<div id="status">
-</div>
+		<div class="row">
+			<div class="col-sm-7">
+				<h3>Vancouver Map:</h3>
+				<p>Going to figure out how to put a map...</p>
+			</div>
+			<div class="col-sm-5" id="foodTruckList">
+				<h3>Food Vendor list:</h3>
+				<p>Going to have a table containing the list and button / click
+					filter function...</p>
+			</div>
+			<!-- OPTIONAL: include this if you want history support -->
+			<iframe src="javascript:''" id="__gwt_historyFrame" tabIndex='-1'
+				style="position: absolute; width: 0; height: 0; border: 0"></iframe>
+			<!-- RECOMMENDED if your web app will not function without JavaScript enabled -->
+			<noscript>
+				<div
+					style="width: 22em; position: absolute; left: 50%; margin-left: -11em; color: red; background-color: white; border: 1px solid red; padding: 4px; font-family: sans-serif">
+					Your web browser must have JavaScript enabled in order for this
+					application to display correctly.</div>
+			</noscript>
+		</div>
+	</div>
+	<fb:login-button scope="public_profile,email"
+		onlogin="checkLoginState();">
+	</fb:login-button>
+
+	<div id="status"></div>
 </body>
 </html>
