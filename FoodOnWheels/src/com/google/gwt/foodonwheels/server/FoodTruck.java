@@ -2,6 +2,13 @@ package com.google.gwt.foodonwheels.server;
 
 import java.io.Serializable;
 
+import javax.jdo.annotations.IdGeneratorStrategy;
+import javax.jdo.annotations.IdentityType;
+import javax.jdo.annotations.PersistenceCapable;
+import javax.jdo.annotations.Persistent;
+import javax.jdo.annotations.PrimaryKey;
+
+@PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class FoodTruck implements Serializable {
 
 	/**
@@ -9,15 +16,30 @@ public class FoodTruck implements Serializable {
 	 */
 	private static final long serialVersionUID = 1L;
 
+	@PrimaryKey
+	@Persistent(valueStrategy = IdGeneratorStrategy.IDENTITY)
+	private Long id;
+	@Persistent
 	private String name;
+	@Persistent
 	private String address;
+	@Persistent
 	private String phone;
+	@Persistent
 	private String cuisine;
+	@Persistent
 	private String hours;
+	@Persistent
 	private String website;
-	
-	public FoodTruck(String name, String address, String location) {
-		
+
+	public FoodTruck(String name, String address) {
+		super();
+		this.name = name;
+		this.address = address;
+		this.phone = "";
+		this.cuisine = "";
+		this.hours = "";
+		this.website = "";
 	}
 
 	public FoodTruck(String name, String address, String phone, String cuisine,
