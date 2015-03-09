@@ -84,7 +84,7 @@ public class FoodOnWheels implements EntryPoint {
 			}
 		});
 		
-//		loadFoodTruckList();
+		loadFoodTruckList();
 
 //		// Set the total row count. This isn't strictly necessary, but it affects
 //		// paging calculations, so its good habit to keep the row count up to date.
@@ -115,20 +115,20 @@ public class FoodOnWheels implements EntryPoint {
 	 */
 	private void fetchYelpData() {
 		// TODO Auto-generated method stub
-		// Set the total row count. This isn't strictly necessary, but it affects
-		// paging calculations, so its good habit to keep the row count up to date.
-		truckCellList.setRowCount(DAYS.size(), true);
-
-		// Push the data into the widget.
-		truckCellList.setRowData(0, DAYS);
-//		foodTruckService
-//		.addFoodTruck("abc", "123 def", new AsyncCallback<Void>() {
-//			public void onFailure(Throwable error) {
-//			}
-//			public void onSuccess(Void ignore) {
-//				Window.alert("Correctly added data");
-//			}
-//		});
+//		// Set the total row count. This isn't strictly necessary, but it affects
+//		// paging calculations, so its good habit to keep the row count up to date.
+//		truckCellList.setRowCount(DAYS.size(), true);
+//
+//		// Push the data into the widget.
+//		truckCellList.setRowData(0, DAYS);
+		foodTruckService
+		.addFoodTruck("abc", "123 def", new AsyncCallback<Void>() {
+			public void onFailure(Throwable error) {
+			}
+			public void onSuccess(Void ignore) {
+				Window.alert("Correctly added data");
+			}
+		});
 
 	}
 

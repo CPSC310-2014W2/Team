@@ -1,9 +1,11 @@
 package com.google.gwt.foodonwheels.server;
 
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.List;
 import java.util.logging.Logger;
 
+import javax.jdo.Extent;
 import javax.jdo.JDOHelper;
 import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
@@ -43,17 +45,24 @@ extends RemoteServiceServlet implements FoodTruckService {
 		PersistenceManager pm = getPersistenceManager();
 		List<String> symbols = new ArrayList<String>();
 		try {
-			Query q = pm.newQuery(FoodTruck.class);
-			q.declareParameters("com.google.appengine.api.users.User u");
-			q.setOrdering("createDate");
-			List<FoodTruck> trucks = (List<FoodTruck>) q.execute();
-			for (FoodTruck truck : trucks) {
-				symbols.add(truck.getName() + " " + truck.getAddress());
+			Extent<FoodTruck> ex = pm.getExtent(FoodTruck.class);
+			Iterator<FoodTruck> iter = ex.iterator();
+			while (iter.hasNext())
+			{
+				FoodTruck truck = iter.next();
+				symbols.add(truck.getName() + truck.getAddress());
 			}
+//			Query q = pm.newQuery(FoodTruck.class);
+//			q.declareParameters("com.google.appengine.api.users.User u");
+//			q.setOrdering("createDate");
+//			List<FoodTruck> trucks = (List<FoodTruck>) q.execute();
+//			for (FoodTruck truck : trucks) {
+//				symbols.add(truck.getName() + " " + truck.getAddress());
+//			}
 		} finally {
 			pm.close();
 		}
-		return null;
+		return symbols;
 	}
 
 	private PersistenceManager getPersistenceManager() {
