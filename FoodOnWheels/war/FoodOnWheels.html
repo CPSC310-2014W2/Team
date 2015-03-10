@@ -3,6 +3,12 @@
 <head>
   <title>Food On Wheels</title>
   <meta charset="utf-8">
+  <!-----added by graham----->
+  
+  <link type="text/css" rel="stylesheet" href="FoodOnWheels.css">
+  <script type="text/javascript" language="javascript" src="foodonwheels/foodonwheels.nocache.js"></script>
+  
+  <!------------------------->
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -10,6 +16,8 @@
 </head>
 <body>
 <script>
+
+
 
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
@@ -91,6 +99,9 @@
     <div class="col-sm-7">
       <h3>Vancouver Map:</h3>
       <p>Going to figure out how to put a map...</p>
+      <!--Added for map-->
+      <div id="map-placement"> </div>
+      <!----------------->
       <button type="button" class="btn btn-info btn-sm">Google</button>
     </div>
     <div class="col-sm-5">
@@ -99,6 +110,8 @@
     </div>
     </div>
   </div>
+
+
 
 <div id="status">
 </div>
