@@ -3,12 +3,15 @@
 <head>
   <title>Food On Wheels</title>
   <meta charset="utf-8">
+  
   <!-----added by graham----->
   
   <link type="text/css" rel="stylesheet" href="FoodOnWheels.css">
   <script type="text/javascript" language="javascript" src="foodonwheels/foodonwheels.nocache.js"></script>
   
   <!------------------------->
+  
+  
   <meta name="viewport" content="width=device-width, initial-scale=1">
   <link rel="stylesheet" href="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/css/bootstrap.min.css">
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
@@ -26,7 +29,6 @@
     height: none;
     width:  100%;
 }
-
 .carousel-inner > .item > img:hover {
     border: 1px solid #000000;
 }
@@ -34,9 +36,6 @@
 </head>
 <body>
 <script>
-
-
-
   // This is called with the results from from FB.getLoginStatus().
   function statusChangeCallback(response) {
     console.log('statusChangeCallback');
@@ -48,7 +47,6 @@
     if (response.status === 'connected') {
       // Logged into your app and Facebook.
       testAPI();
-      //console.log(response.authResponse.accessToken);
     } else if (response.status === 'not_authorized') {
       // The person is logged into Facebook, but not your app.
       document.getElementById('status').innerHTML = 'Please log ' +
@@ -60,7 +58,6 @@
         'into Facebook.';
     }
   }
-
   // This function is called when someone finishes with the Login
   // Button.  See the onlogin handler attached to it in the sample
   // code below.
@@ -69,7 +66,6 @@
       statusChangeCallback(response);
     });
   }
-
   window.fbAsyncInit = function() {
     FB.init({
       appId      : '892727724112644',
@@ -77,15 +73,13 @@
       version    : 'v2.2'
     });
   };
-
-  // Load the SDK asynchronously
-  (function(d, s, id) {
-    var js, fjs = d.getElementsByTagName(s)[0];
-    if (d.getElementById(id)) return;
-    js = d.createElement(s); js.id = id;
-    js.src = "//connect.facebook.net/en_US/sdk.js";
-    fjs.parentNode.insertBefore(js, fjs);
-  }(document, 'script', 'facebook-jssdk'));
+  (function(d, s, id){
+     var js, fjs = d.getElementsByTagName(s)[0];
+     if (d.getElementById(id)) {return;}
+     js = d.createElement(s); js.id = id;
+     js.src = "//connect.facebook.net/en_US/sdk.js";
+     fjs.parentNode.insertBefore(js, fjs);
+   }(document, 'script', 'facebook-jssdk'));
    
    function testAPI() {
     console.log('Welcome!  Fetching your information.... ');
@@ -93,19 +87,15 @@
       console.log('Successful login for: ' + response.name);
       document.getElementById('status').innerHTML =
         'You are logged in now, ' + response.name + '!';
-
     });
 	function fbLogout() {
         FB.logout(function (response) {
             //Do what ever you want here when logged out like reloading the page
             window.location.reload();
-            (document.getElementById('status').innerHTML = 'Now you are logged ' +
-        'out of Facebook!';
         });
     }
   }
 </script>
-
 <style>
   .topright { position: relative; top: 0px; right: 5px; text-align: right; }
 </style>
@@ -118,7 +108,6 @@ h1 {
 </style>
     <h1>Food On Wheels</h1>
     <p>Find great food vendors in Vancouver!</p><br>
-
       <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" size="large" show_faces="false" auto_logout_link="true"></fb:login-button><br><br>
       <button type="button" class="btn btn-warning btn-sm" data-toggle="collapse"  data-target="#demo">
         CPSC 310 Term Project
@@ -129,9 +118,7 @@ h1 {
       <div class="container">
   <br>
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
-
     <!-- Style -->
-
     <!-- Indicators -->
     <ol class="carousel-indicators">
       <li data-target="#myCarousel" data-slide-to="0" class="active"></li>
@@ -139,10 +126,8 @@ h1 {
       <li data-target="#myCarousel" data-slide-to="2"></li>
       <li data-target="#myCarousel" data-slide-to="3"></li>
     </ol>
-
     <!-- Wrapper for slides -->
     <div class="carousel-inner" role="listbox">
-
       <div class="item active">
         <img src="img/sandwich.jpg" alt="Food" width="460" height="345">
         <div class="carousel-caption">
@@ -150,7 +135,6 @@ h1 {
           <p>The Poker by Pig on the Street. <br> Photo credit: http://seansadventuresinflavortown.com </p>
         </div>
       </div>
-
       <div class="item">
         <img src="img/japadog.jpg" alt="Food" width="460" height="345">
         <div class="carousel-caption">
@@ -166,7 +150,6 @@ h1 {
           <p>Anywhere Anytime in Vancouver. <br> Photo credit: http://dansgoodside.com </p>
         </div>
       </div>
-
       <div class="item">
         <img src="img/robson.jpg" alt="Street" width="460" height="345">
         <div class="carousel-caption">
@@ -176,7 +159,6 @@ h1 {
       </div>
   
     </div>
-
   <!-- Left and right controls -->
   <a class="left carousel-control" href="#myCarousel" role="button" data-slide="prev">
     <span class="glyphicon glyphicon-chevron-left" aria-hidden="true"></span>
@@ -193,10 +175,7 @@ h1 {
     <div class="col-sm-7">
       <h3>Vancouver Map:</h3>
       <p>Going to figure out how to put a map...</p>
-      <!--Added for map-->
-      <div id="map-placement"> </div>
-      <!----------------->
-      <button type="button" class="btn btn-info btn-sm">Google</button>
+      <div id = map-placement> </div>
     </div>
     <div class="col-sm-5">
       <h3>Food Vendor list:</h3>
@@ -205,9 +184,6 @@ h1 {
     </div>
     </div>
   </div>
-
-
-
 <div id="status">
 </div>
 </body>
