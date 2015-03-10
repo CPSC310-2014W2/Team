@@ -10,4 +10,6 @@ public interface FoodTruckService extends RemoteService {
 	void addFoodTruck(String name, String address);
 
 	List<String> getFoodTruckList();
+	
+	void fetchFoodTruckDataFromYelp();
 }

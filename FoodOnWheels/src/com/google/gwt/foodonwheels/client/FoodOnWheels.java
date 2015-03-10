@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.google.gwt.foodonwheels.server.FoodTruck;
 import com.google.gwt.foodonwheels.shared.FieldVerifier;
+import com.google.gwt.json.client.JSONParser;
+import com.google.gwt.json.client.JSONValue;
 import com.google.gwt.cell.client.TextCell;
 import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
@@ -83,15 +85,15 @@ public class FoodOnWheels implements EntryPoint {
 				}
 			}
 		});
-		
+
 		loadFoodTruckList();
 
-//		// Set the total row count. This isn't strictly necessary, but it affects
-//		// paging calculations, so its good habit to keep the row count up to date.
-//		truckCellList.setRowCount(DAYS.size(), true);
-//
-//		// Push the data into the widget.
-//		truckCellList.setRowData(0, DAYS);
+		//		// Set the total row count. This isn't strictly necessary, but it affects
+		//		// paging calculations, so its good habit to keep the row count up to date.
+		//		truckCellList.setRowCount(DAYS.size(), true);
+		//
+		//		// Push the data into the widget.
+		//		truckCellList.setRowData(0, DAYS);
 
 		truckListPanel.add(fetchTruckListButton);
 		truckListPanel.add(truckCellList);
@@ -115,20 +117,37 @@ public class FoodOnWheels implements EntryPoint {
 	 */
 	private void fetchYelpData() {
 		// TODO Auto-generated method stub
-//		// Set the total row count. This isn't strictly necessary, but it affects
-//		// paging calculations, so its good habit to keep the row count up to date.
-//		truckCellList.setRowCount(DAYS.size(), true);
-//
-//		// Push the data into the widget.
-//		truckCellList.setRowData(0, DAYS);
+		//		// Set the total row count. This isn't strictly necessary, but it affects
+		//		// paging calculations, so its good habit to keep the row count up to date.
+		//		truckCellList.setRowCount(DAYS.size(), true);
+		//
+		//		// Push the data into the widget.
+		//		truckCellList.setRowData(0, DAYS);
 		foodTruckService
-		.addFoodTruck("abc", "123 def", new AsyncCallback<Void>() {
-			public void onFailure(Throwable error) {
+		.fetchFoodTruckDataFromYelp(new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				Window.alert(caught.getMessage());
 			}
-			public void onSuccess(Void ignore) {
-				Window.alert("Correctly added data");
+
+			@Override
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub
+				Window.alert("Results from Yelp stored into server.");
 			}
+
 		});
+
+//		foodTruckService
+//		.addFoodTruck("abc", "123 def", new AsyncCallback<Void>() {
+//			public void onFailure(Throwable error) {
+//			}
+//			public void onSuccess(Void ignore) {
+//				Window.alert("Correctly added data");
+//			}
+//		});
 
 	}
 

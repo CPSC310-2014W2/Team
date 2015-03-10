@@ -10,4 +10,6 @@ public interface FoodTruckServiceAsync {
 
 	void getFoodTruckList(AsyncCallback<List<String>> callback);
 
+	void fetchFoodTruckDataFromYelp(AsyncCallback<Void> callback);
+
 }
