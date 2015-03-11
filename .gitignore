@@ -28,7 +28,7 @@ www-test/
 .gwt-tmp/
 
 #ignoring class path since everyone's using a different OS
-.classpath
+.classpath/
 
 #files created by local server 
-war/foodonwheels
+war/foodonwheels/
