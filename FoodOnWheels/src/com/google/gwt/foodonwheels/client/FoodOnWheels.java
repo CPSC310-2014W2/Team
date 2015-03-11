@@ -185,7 +185,7 @@ public class FoodOnWheels implements EntryPoint {
 		// Add the map to the HTML host page
 		RootPanel.get("map-placement").add(map);
 	}
-}
+
 
 /**
  * Fetch food truck data from YELP. Executed when the user clicks
