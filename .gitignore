@@ -26,3 +26,9 @@ www-test/
 
 #old GWT (1.5) created this dir
 .gwt-tmp/
+
+#ignoring class path since everyone's using a different OS
+.classpath
+
+#files created by local server 
+war/foodonwheels
