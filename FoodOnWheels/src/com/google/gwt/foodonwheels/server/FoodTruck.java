@@ -8,6 +8,8 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.gwt.maps.client.geom.LatLng;
+
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class FoodTruck implements Serializable {
 
@@ -28,9 +30,14 @@ public class FoodTruck implements Serializable {
 	@Persistent
 	private String cuisine;
 	@Persistent
-	private String hours;
+	private String imageUrl;
 	@Persistent
 	private String website;
+	@Persistent
+	private LatLng geoLocation;
+	@Persistent
+	private int score;
+
 
 	public FoodTruck(String name, String address) {
 		super();
@@ -38,68 +45,64 @@ public class FoodTruck implements Serializable {
 		this.address = address;
 		this.phone = "";
 		this.cuisine = "";
-		this.hours = "";
+		this.imageUrl = "";
 		this.website = "";
 	}
 
 	public FoodTruck(String name, String address, String phone, String cuisine,
-			String hours, String website) {
+			String imageUrl, String website, double latitude, double longitude) {
 		super();
 		this.name = name;
 		this.address = address;
 		this.phone = phone;
 		this.cuisine = cuisine;
-		this.hours = hours;
+		this.imageUrl = imageUrl;
 		this.website = website;
+		this.geoLocation = LatLng.newInstance(latitude, longitude);
+	}
+
+	public static long getSerialversionuid() {
+		return serialVersionUID;
+	}
+
+	public Long getId() {
+		return id;
 	}
 
 	public String getName() {
 		return name;
 	}
 
-	public void setName(String name) {
-		this.name = name;
-	}
-
 	public String getAddress() {
 		return address;
-	}
-
-	public void setAddress(String address) {
-		this.address = address;
 	}
 
 	public String getPhone() {
 		return phone;
 	}
 
-	public void setPhone(String phone) {
-		this.phone = phone;
-	}
-
 	public String getCuisine() {
 		return cuisine;
 	}
 
-	public void setCuisine(String cuisine) {
-		this.cuisine = cuisine;
-	}
-
-	public String getHours() {
-		return hours;
-	}
-
-	public void setHours(String hours) {
-		this.hours = hours;
+	public String getImageUrl() {
+		return imageUrl;
 	}
 
 	public String getWebsite() {
 		return website;
 	}
 
-	public void setWebsite(String website) {
-		this.website = website;
+	public LatLng getGeoLocation() {
+		return geoLocation;
 	}
 
+	public int getScore() {
+		return score;
+	}
+
+	public void setScore(int score) {
+		this.score = score;
+	}
 
 }
