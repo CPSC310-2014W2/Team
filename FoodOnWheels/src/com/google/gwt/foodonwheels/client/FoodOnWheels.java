@@ -1,5 +1,7 @@
 package com.google.gwt.foodonwheels.client;
 
+import java.util.ArrayList;
+
 import com.gargoylesoftware.htmlunit.javascript.host.geo.Coordinates;
 import com.google.gwt.foodonwheels.shared.FieldVerifier;
 import com.google.gwt.geolocation.client.Geolocation;
@@ -18,8 +20,11 @@ import com.google.gwt.dom.client.Style.Unit;
 import com.google.gwt.event.dom.client.ClickEvent;
 import com.google.gwt.event.dom.client.ClickHandler;
 import com.google.gwt.event.dom.client.KeyCodes;
+import com.google.gwt.event.dom.client.KeyDownEvent;
+import com.google.gwt.event.dom.client.KeyDownHandler;
 import com.google.gwt.event.dom.client.KeyUpEvent;
 import com.google.gwt.event.dom.client.KeyUpHandler;
+import com.google.gwt.user.cellview.client.CellTable;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.Anchor;
@@ -42,37 +47,26 @@ public class FoodOnWheels implements EntryPoint {
 
 	// GWT module entry point method.
 	private VerticalPanel mainPanel = new VerticalPanel();
-	private FlexTable listFlexTable = new FlexTable();
+	private FlexTable truckFlexTable = new FlexTable();
 	private HorizontalPanel addPanel = new HorizontalPanel();
 	private TextBox newSymbolTextBox = new TextBox();
 	private Button addStockButton = new Button("Add");
 	private Label lastUpdatedLabel = new Label();
+	private ArrayList<String> favourites = new ArrayList<String>();
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Label loginLabel = new Label(
-			"Sign in to your Google Account to make your favourite Food Truck list!");
+			"Please sign in to your Google Account to access the StockWatcher application.");
 	private Anchor signInLink = new Anchor("Sign In");
-	private Anchor signOutLink = new Anchor("Sign Out");
 
 	public void onModuleLoad() {
 
-		// Check login status using login service.
-		LoginServiceAsync loginService = GWT.create(LoginService.class);
-		loginService.login(GWT.getHostPageBaseURL(),
-				new AsyncCallback<LoginInfo>() {
-					public void onFailure(Throwable error) {
-					}
-
-					public void onSuccess(LoginInfo result) {
-						loginInfo = result;
-						if (loginInfo.isLoggedIn()) {
-							buildUi();
-						} else {
-							loadLogin();
-						}
-					}
-				});
-
+		VerticalPanel verticalPanel=new VerticalPanel();
+        TextBox filterBox=new TextBox();
+        verticalPanel.add(filterBox);
+        
+        //CellTable<Person> cell=new CellTable<Person>();
+        
 		/*
 		 * Asynchronously loads the Maps API.
 		 * 
@@ -86,40 +80,61 @@ public class FoodOnWheels implements EntryPoint {
 						buildUi();
 					}
 				});
-	}
+		/*
+		 * Table for the list of food vendors
+		 */
+		// Create table for stock data.
+		truckFlexTable.setText(0, 0, "Name");
+		truckFlexTable.setText(0, 1, "Address");
+		truckFlexTable.setText(0, 2, "Phone");
+		truckFlexTable.setText(0, 3, "Favourite");
 
-	private void loadFoodOnWheels() {
-		// Set up sign out hyperlink.
-		signOutLink.setHref(loginInfo.getLogoutUrl());
+		// Assemble Add Stock panel.
+		addPanel.add(newSymbolTextBox);
+		addPanel.add(addStockButton);
 
-		// Create table for favourite trucks.
-		listFlexTable.setText(0, 0, "Name");
-		listFlexTable.setText(0, 1, "Address");
-		
-		// Add styles to elements in the stock list table.
-		listFlexTable.getRowFormatter().addStyleName(0, "watchListHeader");
-		listFlexTable.addStyleName("watchList");
-		listFlexTable.setCellPadding(3);
-		listFlexTable.getCellFormatter().addStyleName(0, 1,
-				"watchListNumericColumn");
-		listFlexTable.getCellFormatter().addStyleName(0, 2,
-				"watchListNumericColumn");
-		listFlexTable.getCellFormatter().addStyleName(0, 3,
-				"watchListRemoveColumn");
-		
 		// Assemble Main panel.
-	    mainPanel.add(signOutLink);
-	    mainPanel.add(listFlexTable);
-	    mainPanel.add(addPanel);
-	    mainPanel.add(lastUpdatedLabel);
-	}
+		mainPanel.add(truckFlexTable);
+		mainPanel.add(addPanel);
+		mainPanel.add(lastUpdatedLabel);
 
-	private void loadLogin() {
-		// Assemble login panel.
-		signInLink.setHref(loginInfo.getLoginUrl());
-		loginPanel.add(loginLabel);
-		loginPanel.add(signInLink);
-		RootPanel.get("favouriteTruckList").add(loginPanel);
+		// Associate the Main panel with the HTML host page.
+		RootPanel.get("truckList").add(mainPanel);
+
+		// Move cursor focus to the input box.
+		newSymbolTextBox.setFocus(true);
+
+		// Listen for mouse events on the Add button.
+		addStockButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				addStock();
+			}
+		});
+
+		// Listen for keyboard events in the input box.
+		newSymbolTextBox.addKeyDownHandler(new KeyDownHandler() {
+			public void onKeyDown(KeyDownEvent event) {
+				if (event.getNativeKeyCode() == KeyCodes.KEY_ENTER) {
+					addStock();
+				}
+			}
+		});
+		// Check login status using login service.
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		loginService.login(GWT.getHostPageBaseURL(),
+				new AsyncCallback<LoginInfo>() {
+					public void onFailure(Throwable error) {
+					}
+
+					public void onSuccess(LoginInfo result) {
+						loginInfo = result;
+						if (loginInfo.isLoggedIn()) {
+							// loadStockWatcher();
+						} else {
+							loadLogin();
+						}
+					}
+				});
 	}
 
 	private void buildUi() {
@@ -170,4 +185,31 @@ public class FoodOnWheels implements EntryPoint {
 		// Add the map to the HTML host page
 		RootPanel.get("map-placement").add(map);
 	}
+
+	/**
+	 * Add stock to FlexTable. Executed when the user clicks the addStockButton
+	 * or presses enter in the newSymbolTextBox.
+	 */
+	private void addStock() {
+	    final String symbol = newSymbolTextBox.getText().toUpperCase().trim();
+	    newSymbolTextBox.setFocus(true);
+	    
+	    // Stock code must be between 1 and 10 chars that are numbers, letters, or dots.
+	    if (!symbol.matches("^[0-9A-Z&#92;&#92;.]{1,10}$")) {
+	      Window.alert("'" + symbol + "' is not a valid symbol.");
+	      newSymbolTextBox.selectAll();
+	      return;
+	    }
+	    
+	    newSymbolTextBox.setText("");
+	 }
+
+	private void loadLogin() {
+		// Assemble login panel.
+		signInLink.setHref(loginInfo.getLoginUrl());
+		loginPanel.add(loginLabel);
+		loginPanel.add(signInLink);
+		RootPanel.get("stockList").add(loginPanel);
+	}
+
 }
