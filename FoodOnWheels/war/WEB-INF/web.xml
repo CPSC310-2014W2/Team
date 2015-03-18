@@ -6,14 +6,20 @@
          xmlns="http://java.sun.com/xml/ns/javaee">
 
   <!-- Servlets -->
+    
+  <servlet>
+    <servlet-name>truckServlet</servlet-name>
+    <servlet-class>com.google.gwt.foodonwheels.server.FoodTruckServiceImpl</servlet-class>
+  </servlet>
+  
   <servlet>
     <servlet-name>loginService</servlet-name>
     <servlet-class>com.google.gwt.foodonwheels.server.LoginServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
-    <servlet-name>loginService</servlet-name>
-    <url-pattern>/foodonwheels/login</url-pattern>
+    <servlet-name>truckServlet</servlet-name>
+    <url-pattern>/foodonwheels/truck</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
