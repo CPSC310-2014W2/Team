@@ -22,6 +22,11 @@
     <url-pattern>/foodonwheels/truck</url-pattern>
   </servlet-mapping>
   
+    <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/foodonwheels/login</url-pattern>
+  </servlet-mapping>
+  
   <!-- Default page to serve -->
   <welcome-file-list>
     <welcome-file>FoodOnWheels.html</welcome-file>

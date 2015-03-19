@@ -32,6 +32,7 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -57,70 +58,94 @@ public class FoodOnWheels implements EntryPoint {
 			+ "attempting to contact the server. Please check your network "
 			+ "connection and try again.";
 
-	//	private HorizontalPanel mainPanel = new HorizontalPanel();
+	// private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel truckListPanel = new VerticalPanel();
 	private Button fetchTruckListButton = new Button("fetch YELP data");
-	private CellList<String> truckCellList = 
-			new CellList<String>(new TextCell());
+	private CellList<String> truckCellList = new CellList<String>(new TextCell());
 	private Label lastUpdatedLabel = new Label();
+	private LoginInfo loginInfo = null;
+	private VerticalPanel loginPanel = new VerticalPanel();
+	private Anchor signInLink = new Anchor("Sign In");
+	private Anchor signOutLink = new Anchor("Sign Out");
+	private Label loginLabel = new Label(
+			"Please sign in to see the list of food vendors");
 
-	private final FoodTruckServiceAsync foodTruckService = 
-			GWT.create(FoodTruckService.class);
+	private final FoodTruckServiceAsync foodTruckService = GWT
+			.create(FoodTruckService.class);
 
 	/**
 	 * The list of data to display.
 	 */
-	private static final List<String> DAYS = 
-			Arrays.asList("Sunday\r\nagain", "Monday",
-					"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+	private static final List<String> DAYS = Arrays.asList("Sunday\r\nagain",
+			"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+
+		// Check login status using login service.
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		loginService.login(GWT.getHostPageBaseURL(),
+				new AsyncCallback<LoginInfo>() {
+					public void onFailure(Throwable error) {
+					}
+
+					public void onSuccess(LoginInfo result) {
+						loginInfo = result;
+						if (loginInfo.isLoggedIn()) {
+							loadFoodTruckList();
+						} else {
+							loadLogin();
+						}
+					}
+				});
+
 		/*
 		 * Asynchronously loads the Maps API.
-		 *
+		 * 
 		 * The first parameter should be a valid Maps API Key to deploy this
 		 * application on a public server, but a blank key will work for an
 		 * application served from localhost.
 		 */
-		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false, new Runnable() {
-			public void run() {
-				buildUi();
-			}
-		});
+		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false,
+				new Runnable() {
+					public void run() {
+						buildUi();
+					}
+				});
 
-		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		truckCellList
+				.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		// Add a selection model to handle user selection.
-		final SingleSelectionModel<String> selectionModel = 
-				new SingleSelectionModel<String>();
+		final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
 		truckCellList.setSelectionModel(selectionModel);
 
 		selectionModel
-		.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
-			public void onSelectionChange
-			(SelectionChangeEvent event) {
-				String selected = selectionModel.getSelectedObject();
-				if (selected != null) {
-					Window.alert("You selected: " + selected);
-				}
-			}
-		});
+				.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+					public void onSelectionChange(SelectionChangeEvent event) {
+						String selected = selectionModel.getSelectedObject();
+						if (selected != null) {
+							Window.alert("You selected: " + selected);
+						}
+					}
+				});
 
 		loadFoodTruckList();
 
-		//		// Set the total row count. This isn't strictly necessary, but it affects
-		//		// paging calculations, so its good habit to keep the row count up to date.
-		//		truckCellList.setRowCount(DAYS.size(), true);
+		// // Set the total row count. This isn't strictly necessary, but it
+		// affects
+		// // paging calculations, so its good habit to keep the row count up to
+		// date.
+		// truckCellList.setRowCount(DAYS.size(), true);
 		//
-		//		// Push the data into the widget.
-		//		truckCellList.setRowData(0, DAYS);
+		// // Push the data into the widget.
+		// truckCellList.setRowData(0, DAYS);
 
 		truckListPanel.add(fetchTruckListButton);
 		truckListPanel.add(truckCellList);
 		truckListPanel.add(lastUpdatedLabel);
-		//	      mainPanel.add(truckListPanel);
+		// mainPanel.add(truckListPanel);
 		// Add it to the root panel.
 		RootPanel.get("foodTruckList").add(truckListPanel);
 
@@ -130,7 +155,6 @@ public class FoodOnWheels implements EntryPoint {
 				fetchYelpData();
 			}
 		});
-
 	}
 
 	private void buildUi() {
@@ -145,29 +169,26 @@ public class FoodOnWheels implements EntryPoint {
 		// Add a marker
 		map.addOverlay(new Marker(Vancouver));
 
+		// Gets current user position
 
-		//Gets current user position
+		Geolocation.getIfSupported().getCurrentPosition(
+				new Callback<Position, PositionError>() {
 
-		Geolocation.getIfSupported().getCurrentPosition(new  Callback<Position, PositionError>(){
+					@Override
+					public void onFailure(PositionError reason) {
+						// TODO Auto-generated method stub
+					}
 
-			@Override
-			public void onFailure(PositionError reason) {
-				// TODO Auto-generated method stub
-
-			}
-
-			@Override
-			public void onSuccess(Position result) {
-				// TODO Auto-generated method stub
-				com.google.gwt.geolocation.client.Position.Coordinates userLoc = result.getCoordinates();
-				LatLng userLocation = LatLng.newInstance(userLoc.getLatitude(), userLoc.getLongitude());
-				map.addOverlay(new Marker(userLocation));
-
-
-			}});
-
-
-
+					@Override
+					public void onSuccess(Position result) {
+						// TODO Auto-generated method stub
+						com.google.gwt.geolocation.client.Position.Coordinates userLoc = result
+								.getCoordinates();
+						LatLng userLocation = LatLng.newInstance(
+								userLoc.getLatitude(), userLoc.getLongitude());
+						map.addOverlay(new Marker(userLocation));
+					}
+				});
 
 		// Add an info window to highlight a point of interest
 		map.getInfoWindow().open(map.getCenter(),
@@ -180,74 +201,79 @@ public class FoodOnWheels implements EntryPoint {
 		RootPanel.get("map-placement").add(map);
 	}
 
+	/**
+	 * Fetch food truck data from YELP. Executed when the user clicks
+	 * fetchTruckListButton.
+	 */
+	private void fetchYelpData() {
+		// TODO Auto-generated method stub
+		// // Set the total row count. This isn't strictly necessary, but it
+		// affects
+		// // paging calculations, so its good habit to keep the row count up to
+		// date.
+		// truckCellList.setRowCount(DAYS.size(), true);
+		//
+		// // Push the data into the widget.
+		// truckCellList.setRowData(0, DAYS);
+		foodTruckService.fetchFoodTruckDataFromYelp(new AsyncCallback<Void>() {
 
-/**
- * Fetch food truck data from YELP. Executed when the user clicks
- * fetchTruckListButton.
- */
-private void fetchYelpData() {
-	// TODO Auto-generated method stub
-	//		// Set the total row count. This isn't strictly necessary, but it affects
-	//		// paging calculations, so its good habit to keep the row count up to date.
-	//		truckCellList.setRowCount(DAYS.size(), true);
-	//
-	//		// Push the data into the widget.
-	//		truckCellList.setRowData(0, DAYS);
-	foodTruckService
-	.fetchFoodTruckDataFromYelp(new AsyncCallback<Void>() {
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				Window.alert(caught.getMessage());
+			}
 
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert(caught.getMessage());
-		}
+			@Override
+			public void onSuccess(Void result) {
+				// TODO Auto-generated method stub
+				Window.alert("Results from Yelp stored into server.");
+			}
+		});
+	}
 
-		@Override
-		public void onSuccess(Void result) {
-			// TODO Auto-generated method stub
-			Window.alert("Results from Yelp stored into server.");
-		}
+	private void loadFoodTruckList() {
+		
+	    // Set up sign out hyperlink.
+	    signOutLink.setHref(loginInfo.getLogoutUrl());
+	    
+	    // Assemble Main panel.
+	    truckListPanel.add(signOutLink);
+	    
+		foodTruckService.getFoodTruckList(new AsyncCallback<List<String>>() {
 
-	});
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				// Set the total row count. This isn't strictly necessary, but
+				// it affects
+				// paging calculations, so its good habit to keep the row count
+				// up to date.
+				truckCellList.setRowCount(DAYS.size(), true);
 
-	//		foodTruckService
-	//		.addFoodTruck("abc", "123 def", new AsyncCallback<Void>() {
-	//			public void onFailure(Throwable error) {
-	//			}
-	//			public void onSuccess(Void ignore) {
-	//				Window.alert("Correctly added data");
-	//			}
-	//		});
+				// Push the data into the widget.
+				truckCellList.setRowData(0, DAYS);
+			}
 
-}
+			@Override
+			public void onSuccess(List<String> result) {
+				// TODO Auto-generated method stub
+				// Set the total row count. This isn't strictly necessary, but
+				// it affects
+				// paging calculations, so its good habit to keep the row count
+				// up to date.
+				truckCellList.setRowCount(result.size(), true);
 
-private void loadFoodTruckList() {
-	foodTruckService.getFoodTruckList(new AsyncCallback<List<String>>() {
+				// Push the data into the widget.
+				truckCellList.setRowData(0, result);
+			}
+		});
+	}
 
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			// Set the total row count. This isn't strictly necessary, but it affects
-			// paging calculations, so its good habit to keep the row count up to date.
-			truckCellList.setRowCount(DAYS.size(), true);
-
-			// Push the data into the widget.
-			truckCellList.setRowData(0, DAYS);
-		}
-
-		@Override
-		public void onSuccess(List<String> result) {
-			// TODO Auto-generated method stub
-			// Set the total row count. This isn't strictly necessary, but it affects
-			// paging calculations, so its good habit to keep the row count up to date.
-			truckCellList.setRowCount(result.size(), true);
-
-			// Push the data into the widget.
-			truckCellList.setRowData(0, result);
-
-		}
-
-	});
-}
-
+	private void loadLogin() {
+		// Assemble login panel.
+		signInLink.setHref(loginInfo.getLoginUrl());
+		loginPanel.add(loginLabel);
+		loginPanel.add(signInLink);
+		RootPanel.get("foodTruckList").add(loginPanel);
+	}
 }
