@@ -8,7 +8,7 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
-import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.foodonwheels.shared.FoodTruckData;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
 public class FoodTruck implements Serializable {
@@ -26,47 +26,52 @@ public class FoodTruck implements Serializable {
 	@Persistent
 	private String address;
 	@Persistent
-	private String phone;
+	private double latitude;
 	@Persistent
-	private String cuisine;
+	private double longitude;
+	@Persistent
+	private int score;
 	@Persistent
 	private String imageUrl;
 	@Persistent
 	private String website;
 	@Persistent
-	private LatLng geoLocation;
+	private String phone;
 	@Persistent
-	private int score;
+	private String cuisine;
+	
+	
 
-
-	public FoodTruck(String name, String address) {
-		super();
+	public FoodTruck(String name, String address, 
+			double latitude, double longitude, 
+			String imageUrl, String website, 
+			String phone, String cuisine) {
 		this.name = name;
 		this.address = address;
-		this.phone = "";
-		this.cuisine = "";
-		this.imageUrl = "";
-		this.website = "";
-	}
-
-	public FoodTruck(String name, String address, String phone, String cuisine,
-			String imageUrl, String website, double latitude, double longitude) {
-		super();
-		this.name = name;
-		this.address = address;
-		this.phone = phone;
-		this.cuisine = cuisine;
+		this.latitude = latitude;
+		this.longitude = longitude;
 		this.imageUrl = imageUrl;
 		this.website = website;
-		this.geoLocation = LatLng.newInstance(latitude, longitude);
+		this.phone = phone;
+		this.cuisine = cuisine;
 	}
 
-	public static long getSerialversionuid() {
-		return serialVersionUID;
+	public FoodTruck(String name, String address, 
+			double latitude, double longitude) {
+		this(name, address, latitude, longitude, "", "", "", "");
+	}
+	
+	public FoodTruck(String name, String address) {
+		this(name, address, 0, 0);
 	}
 
-	public Long getId() {
-		return id;
+	public FoodTruckData convert() {
+		String name = this.getName();
+		String address = this.getAddress();
+		double latitude = this.getLatitude();
+		double longitude = this.getLongitude();
+		
+		return new FoodTruckData(name, address, latitude, longitude);
 	}
 
 	public String getName() {
@@ -75,6 +80,14 @@ public class FoodTruck implements Serializable {
 
 	public String getAddress() {
 		return address;
+	}
+
+	public double getLatitude() {
+		return latitude;
+	}
+
+	public double getLongitude() {
+		return longitude;
 	}
 
 	public String getPhone() {
@@ -91,10 +104,6 @@ public class FoodTruck implements Serializable {
 
 	public String getWebsite() {
 		return website;
-	}
-
-	public LatLng getGeoLocation() {
-		return geoLocation;
 	}
 
 	public int getScore() {
