@@ -2,6 +2,7 @@ package com.google.gwt.foodonwheels.client;
 
 import java.util.List;
 
+import com.google.gwt.foodonwheels.shared.FoodTruckData;
 import com.google.gwt.user.client.rpc.RemoteService;
 import com.google.gwt.user.client.rpc.RemoteServiceRelativePath;
 
@@ -11,5 +12,9 @@ public interface FoodTruckService extends RemoteService {
 
 	List<String> getFoodTruckList();
 	
+	List<FoodTruckData> getFoodTruckDataList();
+	
 	void fetchFoodTruckDataFromYelp();
+	
+	void fetchFoodTruckDataFromFourSquare();
 }

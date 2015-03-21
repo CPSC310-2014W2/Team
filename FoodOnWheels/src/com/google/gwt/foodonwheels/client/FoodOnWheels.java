@@ -1,10 +1,12 @@
 package com.google.gwt.foodonwheels.client;
 
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 
 import com.gargoylesoftware.htmlunit.javascript.host.geo.Coordinates;
 import com.google.gwt.foodonwheels.shared.FieldVerifier;
+import com.google.gwt.foodonwheels.shared.FoodTruckData;
 import com.google.gwt.geolocation.client.Geolocation;
 import com.google.gwt.geolocation.client.Position;
 import com.google.gwt.geolocation.client.PositionError;
@@ -114,14 +116,7 @@ public class FoodOnWheels implements EntryPoint {
 			}
 		});
 
-		loadFoodTruckList();
-
-		//		// Set the total row count. This isn't strictly necessary, but it affects
-		//		// paging calculations, so its good habit to keep the row count up to date.
-		//		truckCellList.setRowCount(DAYS.size(), true);
-		//
-		//		// Push the data into the widget.
-		//		truckCellList.setRowData(0, DAYS);
+		loadFoodTruckDataList();
 
 		truckListPanel.add(fetchTruckListButton);
 		truckListPanel.add(truckCellList);
@@ -133,7 +128,7 @@ public class FoodOnWheels implements EntryPoint {
 		// Listen for mouse events on the fetch YELP data button.
 		fetchTruckListButton.addClickHandler(new ClickHandler() {
 			public void onClick(ClickEvent event) {
-				fetchYelpData();
+				fetchDataFromProvider();
 			}
 		});
 
@@ -168,12 +163,8 @@ public class FoodOnWheels implements EntryPoint {
 				com.google.gwt.geolocation.client.Position.Coordinates userLoc = result.getCoordinates();
 				LatLng userLocation = LatLng.newInstance(userLoc.getLatitude(), userLoc.getLongitude());
 				map.addOverlay(new Marker(userLocation));
-
-
-			}});
-
-
-
+			}
+		});
 
 		// Add an info window to highlight a point of interest
 		map.getInfoWindow().open(map.getCenter(),
@@ -187,73 +178,51 @@ public class FoodOnWheels implements EntryPoint {
 	}
 
 
-/**
- * Fetch food truck data from YELP. Executed when the user clicks
- * fetchTruckListButton.
- */
-private void fetchYelpData() {
-	// TODO Auto-generated method stub
-	//		// Set the total row count. This isn't strictly necessary, but it affects
-	//		// paging calculations, so its good habit to keep the row count up to date.
-	//		truckCellList.setRowCount(DAYS.size(), true);
-	//
-	//		// Push the data into the widget.
-	//		truckCellList.setRowData(0, DAYS);
-	foodTruckService
-	.fetchFoodTruckDataFromYelp(new AsyncCallback<Void>() {
+	/**
+	 * Fetch food truck data from YELP. Executed when the user clicks
+	 * fetchTruckListButton.
+	 */
+	private void fetchDataFromProvider() {
+		foodTruckService
+		.fetchFoodTruckDataFromFourSquare(new AsyncCallback<Void>() {
 
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			Window.alert(caught.getMessage());
-		}
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+			}
 
-		@Override
-		public void onSuccess(Void result) {
-			// TODO Auto-generated method stub
-			Window.alert("Results from Yelp stored into server.");
-		}
+			@Override
+			public void onSuccess(Void result) {
+				Window.alert("Results from FourSquare stored into server.");
+				loadFoodTruckDataList();
+			}
 
-	});
+		});
+	}
 
-	//		foodTruckService
-	//		.addFoodTruck("abc", "123 def", new AsyncCallback<Void>() {
-	//			public void onFailure(Throwable error) {
-	//			}
-	//			public void onSuccess(Void ignore) {
-	//				Window.alert("Correctly added data");
-	//			}
-	//		});
+	private void loadFoodTruckDataList() {
+		foodTruckService
+		.getFoodTruckDataList(new AsyncCallback<List<FoodTruckData>>() {
 
-}
+			@Override
+			public void onFailure(Throwable caught) {
+				// TODO Auto-generated method stub
+				truckCellList.setRowCount(DAYS.size(), true);
+				// Push the data into the widget.
+				truckCellList.setRowData(0, DAYS);
 
-private void loadFoodTruckList() {
-	foodTruckService.getFoodTruckList(new AsyncCallback<List<String>>() {
+			}
 
-		@Override
-		public void onFailure(Throwable caught) {
-			// TODO Auto-generated method stub
-			// Set the total row count. This isn't strictly necessary, but it affects
-			// paging calculations, so its good habit to keep the row count up to date.
-			truckCellList.setRowCount(DAYS.size(), true);
-
-			// Push the data into the widget.
-			truckCellList.setRowData(0, DAYS);
-		}
-
-		@Override
-		public void onSuccess(List<String> result) {
-			// TODO Auto-generated method stub
-			// Set the total row count. This isn't strictly necessary, but it affects
-			// paging calculations, so its good habit to keep the row count up to date.
-			truckCellList.setRowCount(result.size(), true);
-
-			// Push the data into the widget.
-			truckCellList.setRowData(0, result);
-
-		}
-
-	});
-}
+			@Override
+			public void onSuccess(List<FoodTruckData> result) {
+				// TODO Auto-generated method stub
+				List<String> values = new ArrayList<String>();
+				for (int k = 0; k < result.size(); k++)
+					values.add(result.get(k).toString());
+				truckCellList.setRowCount(values.size(), true);
+				truckCellList.setRowData(0, values);
+			}
+		});
+	}
 
 }
