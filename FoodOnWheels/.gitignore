@@ -34,3 +34,4 @@ www-test/
 war/foodonwheels//FoodOnWheels/
 
 .DS_Store
+/test-classes
