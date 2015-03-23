@@ -1,2 +1,0 @@
-serviceClass: com.google.gwt.foodonwheels.client.GreetingService
-path: C5015046C409D7A0453823431F5A9711.gwt.rpc
