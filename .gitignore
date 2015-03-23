@@ -31,4 +31,9 @@ www-test/
 .classpath/
 
 #files created by local server 
-war/foodonwheels//FoodOnWheels/
+FoodOnWheels/war/foodonwheels/
+
+.DS_Store
+.settings/
+
+
