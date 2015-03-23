@@ -12,8 +12,8 @@ gwt-unitCache/
 .apt_generated/
 
 # more caches and things from deploy #
-war/WEB-INF/deploy/
-war/WEB-INF/classes/
+*/war/WEB-INF/deploy/
+*/war/WEB-INF/classes/
 
 #compilation logs
 .gwt/
@@ -26,3 +26,13 @@ www-test/
 
 #old GWT (1.5) created this dir
 .gwt-tmp/
+
+#ignoring class path since everyone's using a different OS
+.classpath/
+
+#files created by local server 
+FoodOnWheels/war/foodonwheels/
+
+.DS_Store
+*/.settings/
+FoodOnWheels/.classpath

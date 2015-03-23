@@ -11,5 +11,6 @@
 	</classpathentry>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/scribe-1.3.7.jar"/>
 	<classpathentry kind="lib" path="war/WEB-INF/lib/json-simple-1.1.1.jar"/>
+	<classpathentry kind="lib" path="war/WEB-INF/lib/gwt-maps.jar"/>
 	<classpathentry kind="output" path="war/WEB-INF/classes"/>
 </classpath>
