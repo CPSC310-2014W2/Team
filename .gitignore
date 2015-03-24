@@ -37,3 +37,5 @@ FoodOnWheels/war/foodonwheels/
 .settings/
 FoodOnWheels/war/WEB-INF/appengine-generated/
 
+
+FoodOnWheels/.classpath

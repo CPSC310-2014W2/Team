@@ -11,15 +11,19 @@ import org.json.simple.parser.ParseException;
 public class FourSquareVenueSearchParser {
 
 	public List<FoodTruck> parse(String responseJSON) throws ParseException {
+		
+		if (responseJSON == null)
+			throw new IllegalArgumentException("Input string can not be null.");
+		
 		List<FoodTruck> trucks = new LinkedList<FoodTruck>();
 		JSONParser parser = new JSONParser();
-		JSONObject response = null;
+		JSONObject serverReply = null;
 
 		// Throws ParseException when the response can not be parsed.
-		response = (JSONObject) parser.parse(responseJSON);
+		serverReply = (JSONObject) parser.parse(responseJSON);
 		try {
-			JSONObject body = (JSONObject) response.get("response");
-			JSONArray venues = (JSONArray) body.get("venues");
+			JSONObject response = (JSONObject) serverReply.get("response");
+			JSONArray venues = (JSONArray) response.get("venues");
 			for (Object venue : venues) {
 				JSONObject v =(JSONObject) venue;
 				String name = v.get("name").toString();
