@@ -75,7 +75,7 @@ public class FoodOnWheels implements EntryPoint {
 	private final FoodTruckServiceAsync foodTruckService = 
 			GWT.create(FoodTruckService.class);
 	
-	
+	//Needed to create FoodCartMap object
 	FoodCartMap cartMap = new FoodCartMap(true);
 
 	/**
@@ -91,11 +91,6 @@ public class FoodOnWheels implements EntryPoint {
 	public void onModuleLoad() {
       
 		
-		//responsible for map loading
-		cartMap.onModuleLoad();
-		///
-		
-
 		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		// Add a selection model to handle user selection.
 		final SingleSelectionModel<String> selectionModel = 
@@ -129,6 +124,22 @@ public class FoodOnWheels implements EntryPoint {
 			}
 		});
 
+		
+
+		/*
+		 * Asynchronously loads the Maps API.
+		 *
+		 * The first parameter should be a valid Maps API Key to deploy this
+		 * application on a public server, but a blank key will work for an
+		 * application served from localhost.
+		 */
+		
+		
+		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false, new Runnable() {
+			public void run() {
+				cartMap.buildUi();
+			}
+		});
 	}
 
 
