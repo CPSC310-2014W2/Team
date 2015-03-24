@@ -10,10 +10,12 @@ import com.google.gwt.foodonwheels.shared.FoodTruckData;
 import com.google.gwt.geolocation.client.Geolocation;
 import com.google.gwt.geolocation.client.Position;
 import com.google.gwt.geolocation.client.PositionError;
+import com.google.gwt.maps.client.InfoWindow;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
 import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
+import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
 import com.google.gwt.maps.client.overlay.Marker;
 import com.google.gwt.user.client.rpc.AsyncCallback;
@@ -85,8 +87,21 @@ public class FoodCartMap {
 			public void onSuccess(List<FoodTruckData> result) {
 				// TODO Auto-generated method stub
 				for (int k = 0; k < result.size(); k++){
-					LatLng cartLatLng =LatLng.newInstance(result.get(k).getLatitude(), result.get(k).getLongitude());
-					 map.addOverlay(new Marker(cartLatLng));
+					final LatLng cartLatLng =LatLng.newInstance(result.get(k).getLatitude(), result.get(k).getLongitude());
+					Marker cartMarker = new Marker(cartLatLng);
+					map.addOverlay(cartMarker);
+					final InfoWindowContent cartDescription = new InfoWindowContent(result.get(k).getName());
+					cartMarker.addMarkerClickHandler(new MarkerClickHandler(){
+						
+
+						@Override
+						public void onClick(MarkerClickEvent event) {
+							// TODO Auto-generated method stub						 
+							 map.getInfoWindow().open(cartLatLng, cartDescription);
+						}
+					});
+					 
+	
 					
 					
 				}
@@ -111,16 +126,18 @@ public class FoodCartMap {
 				com.google.gwt.geolocation.client.Position.Coordinates userLoc = result.getCoordinates();
 				LatLng userLocation = LatLng.newInstance(userLoc.getLatitude(), userLoc.getLongitude());
 				map.addOverlay(new Marker(userLocation));
+				 
 			}
 		});
 
 		// Add an info window to highlight a point of interest
-		map.getInfoWindow().open(map.getCenter(),
-				new InfoWindowContent("Downtown Vancouver"));
+//		map.getInfoWindow().open(map.getCenter(),
+//				new InfoWindowContent("Downtown Vancouver"));
 
 		// final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
 		// dock.addNorth(map, 500);
 		// Add the map to the HTML host page
+		
 		RootPanel.get("map-placement").add(map);
 		System.out.println("build function ran");
 	}
