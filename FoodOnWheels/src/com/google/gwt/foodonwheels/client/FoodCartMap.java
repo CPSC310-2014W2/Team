@@ -91,8 +91,8 @@ public class FoodCartMap {
 					Marker cartMarker = new Marker(cartLatLng);
 					map.addOverlay(cartMarker);
 					final InfoWindowContent cartDescription = 
-							new InfoWindowContent("<p>" + result.get(k).getName()+ "<br>" + result.get(k).getAddress()+ 
-									"<br>" +"Rank =" + result.get(k).getRank()+ "</p>");
+							new InfoWindowContent("<p>" + "<strong>" + result.get(k).getName()+ "</strong> " + "<br>" + result.get(k).getAddress()+ 
+									"<br>" +"Rank = " + result.get(k).getRank()+ "</p>");
 					cartMarker.addMarkerClickHandler(new MarkerClickHandler(){
 						
 
@@ -127,7 +127,9 @@ public class FoodCartMap {
 				// TODO Auto-generated method stub
 				com.google.gwt.geolocation.client.Position.Coordinates userLoc = result.getCoordinates();
 				LatLng userLocation = LatLng.newInstance(userLoc.getLatitude(), userLoc.getLongitude());
-				map.addOverlay(new Marker(userLocation));
+				Marker userMarker = new Marker(userLocation);
+				userMarker.setImage("http://www.maps.google.com/mapfiles/arrow.png");
+				map.addOverlay(userMarker);
 				 
 			}
 		});
