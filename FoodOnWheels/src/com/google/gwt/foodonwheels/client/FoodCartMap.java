@@ -90,7 +90,9 @@ public class FoodCartMap {
 					final LatLng cartLatLng =LatLng.newInstance(result.get(k).getLatitude(), result.get(k).getLongitude());
 					Marker cartMarker = new Marker(cartLatLng);
 					map.addOverlay(cartMarker);
-					final InfoWindowContent cartDescription = new InfoWindowContent(result.get(k).getName());
+					final InfoWindowContent cartDescription = 
+							new InfoWindowContent("<p>" + result.get(k).getName()+ "<br>" + result.get(k).getAddress()+ 
+									"<br>" +"Rank =" + result.get(k).getRank()+ "</p>");
 					cartMarker.addMarkerClickHandler(new MarkerClickHandler(){
 						
 
