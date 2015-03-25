@@ -34,6 +34,7 @@ import com.google.gwt.user.cellview.client.CellList;
 import com.google.gwt.user.cellview.client.HasKeyboardSelectionPolicy.KeyboardSelectionPolicy;
 import com.google.gwt.user.client.Window;
 import com.google.gwt.user.client.rpc.AsyncCallback;
+import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
@@ -60,17 +61,23 @@ public class FoodOnWheels implements EntryPoint {
 			+ "connection and try again.";
 
 	/**
-	 * Create a remote service proxy to talk to the server-side Greeting service.
+	 * Create a remote service proxy to talk to the server-side Greeting
+	 * service.
 	 */
-	private final GreetingServiceAsync greetingService = GWT
-			.create(GreetingService.class);
 
-	//	private HorizontalPanel mainPanel = new HorizontalPanel();
+	// private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel truckListPanel = new VerticalPanel();
 	private Button fetchTruckListButton = new Button("fetch YELP data");
-	private CellList<String> truckCellList = 
-			new CellList<String>(new TextCell());
+	private CellList<String> truckCellList = new CellList<String>(
+			new TextCell());
 	private Label lastUpdatedLabel = new Label();
+	private LoginInfo loginInfo = null;
+	private VerticalPanel loginPanel = new VerticalPanel();
+	private Anchor signInLink = new Anchor("Sign In");
+	private Anchor signOutLink = new Anchor("Sign Out");
+	private Label loginLabel = new Label(
+			"Sign in to customize your favourite food vendors list!");
+
 
 	private final FoodTruckServiceAsync foodTruckService = 
 			GWT.create(FoodTruckService.class);
@@ -78,23 +85,49 @@ public class FoodOnWheels implements EntryPoint {
 	//Needed to create FoodCartMap object
 	FoodCartMap cartMap = new FoodCartMap(true);
 
+
+
+
 	/**
 	 * The list of data to display.
 	 */
-	private static final List<String> DAYS = 
-			Arrays.asList("Sunday\r\nagain", "Monday",
-					"Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
+	private static final List<String> DAYS = Arrays.asList("Sunday\r\nagain",
+			"Monday", "Tuesday", "Wednesday", "Thursday", "Friday", "Saturday");
 
 	/**
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
+
       
 		
 		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
+
+		// Check login status using login service.
+		LoginServiceAsync loginService = GWT.create(LoginService.class);
+		loginService.login(GWT.getHostPageBaseURL(),
+				new AsyncCallback<LoginInfo>() {
+					public void onFailure(Throwable error) {
+					}
+
+					public void onSuccess(LoginInfo result) {
+						loginInfo = result;
+						if (loginInfo.isLoggedIn()) {
+							loadFoodTruckDataList();
+						} else {
+							loadLogin();
+						}
+					}
+				});
+
+
+
+		truckCellList
+				.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+
 		// Add a selection model to handle user selection.
-		final SingleSelectionModel<String> selectionModel = 
-				new SingleSelectionModel<String>();
+		final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
 		truckCellList.setSelectionModel(selectionModel);
 
 		selectionModel
@@ -107,6 +140,7 @@ public class FoodOnWheels implements EntryPoint {
 				}
 			}
 		});
+
 
 		loadFoodTruckDataList();
 
@@ -138,9 +172,11 @@ public class FoodOnWheels implements EntryPoint {
 		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false, new Runnable() {
 			public void run() {
 				cartMap.buildUi();
-			}
-		});
+
 	}
+
+
+
 
 
 
@@ -164,9 +200,17 @@ public class FoodOnWheels implements EntryPoint {
 			}
 
 		});
-	}
 
-	private void loadFoodTruckDataList() {
+	private void loadLogin() {
+		// Assemble login panel.
+		signInLink.setHref(loginInfo.getLoginUrl());
+		loginPanel.add(loginLabel);
+		loginPanel.add(signInLink);
+		RootPanel.get("foodTruckList").add(loginPanel);
+
+	}
+	
+	private void loadFoodTruckData() {
 		foodTruckService
 		.getFoodTruckDataList(new AsyncCallback<List<FoodTruckData>>() {
 
@@ -190,5 +234,49 @@ public class FoodOnWheels implements EntryPoint {
 			}
 		});
 	}
+	
+	private void loadFoodTruckDataList() {
+		// Set up sign out hyperlink.
+		signOutLink.setHref(loginInfo.getLogoutUrl());
+				
+		loadFoodTruckData();
+		
+		// Push the data into the widget.
+		truckListPanel.add(fetchTruckListButton);
+		truckListPanel.add(truckCellList);
+		truckListPanel.add(lastUpdatedLabel);
+		truckListPanel.add(signOutLink);
+		
+		// Add it to the root panel.
+		RootPanel.get("foodTruckList").add(truckListPanel);
 
+		// Listen for mouse events on the fetch YELP data button.
+		fetchTruckListButton.addClickHandler(new ClickHandler() {
+			public void onClick(ClickEvent event) {
+				fetchDataFromProvider();
+			};
+		});
+	}
+	
+	/**
+	 * Fetch food truck data from YELP. Executed when the user clicks
+	 * fetchTruckListButton.
+	 */
+	private void fetchDataFromProvider() {
+		foodTruckService
+		.fetchFoodTruckDataFromFourSquare(new AsyncCallback<Void>() {
+
+			@Override
+			public void onFailure(Throwable caught) {
+				Window.alert(caught.getMessage());
+			}
+
+			@Override
+			public void onSuccess(Void result) {
+				Window.alert("Results from FourSquare stored into server.");
+				loadFoodTruckDataList();
+			}
+
+		});
+	}
 }
