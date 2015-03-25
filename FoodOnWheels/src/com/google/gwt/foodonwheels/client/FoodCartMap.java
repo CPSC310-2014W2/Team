@@ -17,7 +17,11 @@ import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
+import com.google.gwt.maps.client.geom.Point;
+import com.google.gwt.maps.client.geom.Size;
+import com.google.gwt.maps.client.overlay.Icon;
 import com.google.gwt.maps.client.overlay.Marker;
+import com.google.gwt.maps.client.overlay.MarkerOptions;
 import com.google.gwt.user.client.rpc.AsyncCallback;
 import com.google.gwt.user.client.ui.RootPanel;
 
@@ -29,7 +33,10 @@ public class FoodCartMap {
 	private final FoodTruckServiceAsync foodTruckService = 
 			GWT.create(FoodTruckService.class);
 	
-
+	//new icon to display user on map
+	
+	
+	
 	public FoodCartMap(boolean newMap){
 		
 		this.mapCanvas = newMap;
@@ -91,7 +98,7 @@ public class FoodCartMap {
 					Marker cartMarker = new Marker(cartLatLng);
 					map.addOverlay(cartMarker);
 					final InfoWindowContent cartDescription = 
-							new InfoWindowContent("<p>" + "<strong>" + result.get(k).getName()+ "</strong> " + "<br>" + result.get(k).getAddress()+ 
+							new InfoWindowContent("<p>" + "<strong>" + result.get(k).getName()+ "</strong> " + "<br>" + checkAddress(result.get(k))+ 
 									"<br>" +"Rank = " + result.get(k).getRank()+ "</p>");
 					cartMarker.addMarkerClickHandler(new MarkerClickHandler(){
 						
@@ -124,15 +131,26 @@ public class FoodCartMap {
 
 			@Override
 			public void onSuccess(Position result) {
-				// TODO Auto-generated method stub
+				// Displays userlocation
+				Icon userImg = Icon.newInstance("https://lh4.ggpht.com/fHB6uUwZst-SodiFAXEvZ2Ve2fV-3MoZqFPEcf9hs4n1ctrkYcX_BPMOa1eV9pR9Mw=w170");
+				userImg.setIconSize(Size.newInstance(30, 35));
+				userImg.setIconAnchor(Point.newInstance(8,20));
+				userImg.setInfoWindowAnchor(Point.newInstance(1, 5));
+				
+				MarkerOptions userDisplay = MarkerOptions.newInstance();
+				userDisplay.setIcon(userImg);
+				
 				com.google.gwt.geolocation.client.Position.Coordinates userLoc = result.getCoordinates();
 				LatLng userLocation = LatLng.newInstance(userLoc.getLatitude(), userLoc.getLongitude());
-				Marker userMarker = new Marker(userLocation);
-				userMarker.setImage("http://www.maps.google.com/mapfiles/arrow.png");
-				map.addOverlay(userMarker);
+				map.addOverlay(new Marker(userLocation, userDisplay));
+				
 				 
 			}
 		});
+		
+		
+		
+//Method to check if  address field of FoodDataCart is null
 
 		// Add an info window to highlight a point of interest
 //		map.getInfoWindow().open(map.getCenter(),
@@ -145,7 +163,12 @@ public class FoodCartMap {
 		RootPanel.get("map-placement").add(map);
 		System.out.println("build function ran");
 	}
-
+	
+	public String checkAddress(FoodTruckData address){
+		if(address.getAddress().length() == 0){
+			return "(No address in database!)";
+		}
+		return "" + address.getAddress();}
 	
 
 }
