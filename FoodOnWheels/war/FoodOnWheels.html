@@ -11,6 +11,7 @@
   <script src="https://ajax.googleapis.com/ajax/libs/jquery/1.11.1/jquery.min.js"></script>
   <script src="http://maxcdn.bootstrapcdn.com/bootstrap/3.2.0/js/bootstrap.min.js"></script>
   <script src="js/facebook.js"></script>
+  <script src="https://apis.google.com/js/platform.js" async defer></script>
     <style>
   .carousel .item {
     background:#F9F9F9;
@@ -42,13 +43,9 @@ h1 {
 </style>
     <h1>Food On Wheels</h1>
     <p>Find great food vendors in Vancouver!</p><br>
-      <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" size="large" show_faces="false" auto_logout_link="true"></fb:login-button><br><br>
-      <button type="button" class="btn btn-warning btn-sm" data-toggle="collapse"  data-target="#demo">
-        CPSC 310 Term Project
-      </button>
-      <div id="demo" class="collapse">
-        <br><p>CPSC 310 Term Project: Team</p>Developed By:<br>April Choi<br>Douglas Wong<br>Devin Li<br>Graham Lee
-      </div>
+      <fb:login-button scope="public_profile,email" onlogin="checkLoginState();" size="large" show_faces="false" auto_logout_link="true" style="float: right;"></fb:login-button><br><br>
+      <fb:like href="http://food-on-wheels.appspot.com" layout="button_count" action="like" show_faces="true" share="true" style="float: right;"></fb:like><br>
+   
       <div class="container">
   <br>
   <div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -103,6 +100,12 @@ h1 {
     <span class="sr-only">Next</span>
   </a>
   </div>
+  <br><button type="button" class="btn btn-warning btn-sm" data-toggle="collapse"  data-target="#demo" style="float:right">
+        CPSC 310 Term Project
+      </button>
+      <div id="demo" class="collapse">
+        <br><p>CPSC 310 Term Project: Team</p>Developed By:<br>April Choi<br>Douglas Wong<br>Devin Li<br>Graham Lee
+      </div>
 </div>
   </div>
   <div class="row">
@@ -110,6 +113,7 @@ h1 {
       <h3>Vancouver Map:</h3>
       <p>Going to figure out how to put a map...</p>
       <div id = map-placement> </div>
+      <br><g:plusone size="medium" data-annotation="bubble"></g:plusone><br><div class="g-plus" data-action="share" data-annotation="bubble"></div>
     </div>
     <div class="col-sm-5" id="foodTruckList">
       <h3>Food Vendor list:</h3>
@@ -123,7 +127,6 @@ h1 {
     </noscript>
       <p>Going to have a table containing the list and button / click filter function...</p>
     </div>
-    <fb:like href="http://food-on-wheels.appspot.com" layout="button_count" action="like" show_faces="true" share="true"></fb:like>
     </div>
   </div>
 <div id="status">
