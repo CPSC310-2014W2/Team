@@ -80,6 +80,9 @@ public class FoodOnWheels implements EntryPoint {
 
 	private final FoodTruckServiceAsync foodTruckService = GWT
 			.create(FoodTruckService.class);
+	
+	//Needed to create FoodCartMap object
+	FoodCartMap cartMap = new FoodCartMap(true);
 
 	/**
 	 * The list of data to display.
@@ -109,19 +112,7 @@ public class FoodOnWheels implements EntryPoint {
 					}
 				});
 
-		/*
-		 * Asynchronously loads the Maps API.
-		 * 
-		 * The first parameter should be a valid Maps API Key to deploy this
-		 * application on a public server, but a blank key will work for an
-		 * application served from localhost.
-		 */
-		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false,
-				new Runnable() {
-					public void run() {
-						buildUi();
-					}
-				});
+
 
 		truckCellList
 				.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
@@ -139,47 +130,19 @@ public class FoodOnWheels implements EntryPoint {
 				}
 			}
 		});
+		
+		//Needed to load map
+		
+		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false, new Runnable() {
+		public void run() {
+			cartMap.buildUi();
+
+}});
+		
+		
 	}
 
-	private void buildUi() {
-		// Open a map centered on Vancouver
-		LatLng Vancouver = LatLng.newInstance(49.2827, -123.1207);
 
-		final MapWidget map = new MapWidget(Vancouver, 16);
-		map.setSize("500px", "400px");
-		// Add some controls for the zoom level
-		map.addControl(new LargeMapControl());
-
-		// Add a marker
-		map.addOverlay(new Marker(Vancouver));
-
-		// Gets current user position
-		Geolocation.getIfSupported().getCurrentPosition(new  Callback<Position, PositionError>(){
-
-			@Override
-			public void onFailure(PositionError reason) {
-				// TODO Auto-generated method stub
-			}
-
-			@Override
-			public void onSuccess(Position result) {
-				// TODO Auto-generated method stub
-				com.google.gwt.geolocation.client.Position.Coordinates userLoc = result.getCoordinates();
-				LatLng userLocation = LatLng.newInstance(userLoc.getLatitude(), userLoc.getLongitude());
-				map.addOverlay(new Marker(userLocation));
-			}
-		});
-
-		// Add an info window to highlight a point of interest
-		map.getInfoWindow().open(map.getCenter(),
-				new InfoWindowContent("Downtown Vancouver"));
-
-		// final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
-		// dock.addNorth(map, 500);
-
-		// Add the map to the HTML host page
-		RootPanel.get("map-placement").add(map);
-	}
 
 	private void loadLogin() {
 		// Assemble login panel.
