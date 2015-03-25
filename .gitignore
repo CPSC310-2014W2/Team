@@ -12,8 +12,8 @@ gwt-unitCache/
 .apt_generated/
 
 # more caches and things from deploy #
-war/WEB-INF/deploy/
-war/WEB-INF/classes/
+*/war/WEB-INF/deploy/
+*/war/WEB-INF/classes/
 
 #compilation logs
 .gwt/
@@ -36,6 +36,4 @@ FoodOnWheels/war/foodonwheels/
 .DS_Store
 .settings/
 FoodOnWheels/war/WEB-INF/appengine-generated/
-
-
 FoodOnWheels/.classpath

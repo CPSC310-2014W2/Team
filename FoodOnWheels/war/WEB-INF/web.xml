@@ -13,8 +13,8 @@
   </servlet>
   
   <servlet>
-    <servlet-name>greetServlet</servlet-name>
-    <servlet-class>com.google.gwt.foodonwheels.server.GreetingServiceImpl</servlet-class>
+    <servlet-name>loginService</servlet-name>
+    <servlet-class>com.google.gwt.foodonwheels.server.LoginServiceImpl</servlet-class>
   </servlet>
   
   <servlet-mapping>
@@ -22,9 +22,9 @@
     <url-pattern>/foodonwheels/truck</url-pattern>
   </servlet-mapping>
   
-  <servlet-mapping>
-    <servlet-name>greetServlet</servlet-name>
-    <url-pattern>/foodonwheels/greet</url-pattern>
+    <servlet-mapping>
+    <servlet-name>loginService</servlet-name>
+    <url-pattern>/foodonwheels/login</url-pattern>
   </servlet-mapping>
   
   <!-- Default page to serve -->
