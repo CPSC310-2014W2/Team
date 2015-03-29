@@ -99,7 +99,7 @@ public class FoodCartMap {
 					map.addOverlay(cartMarker);
 					final InfoWindowContent cartDescription = 
 							new InfoWindowContent("<p>" + "<strong>" + result.get(k).getName()+ "</strong> " + "<br>" + checkAddress(result.get(k))+ 
-									"<br>" +"Rank = " + result.get(k).getRank()+ "</p>");
+									"<br>"+"Check-in count: "+ result.get(k).getCount()+ "<br>" + "Website: " + result.get(k).getUrl() + "<br>"+"Rank = " + result.get(k).getRank()+ "</p>");
 					cartMarker.addMarkerClickHandler(new MarkerClickHandler(){
 						
 
