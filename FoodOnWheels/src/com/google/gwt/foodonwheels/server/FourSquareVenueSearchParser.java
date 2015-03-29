@@ -28,19 +28,44 @@ public class FourSquareVenueSearchParser {
 				JSONObject v =(JSONObject) venue;
 				String name = v.get("name").toString();
 				JSONObject location = (JSONObject) v.get("location");
-				String address;
-				if (location.get("address") != null) {
+				JSONObject stats = (JSONObject) v.get("stats");
+				
+				String url = "No Website";
+				if (v.get("url") != null)
+					url = v.get("url").toString();
+				
+				String userCounts = stats.get("usersCount").toString();
+				
+				String address, crossSt, formattedAddress;
+				
+				if (location.get("address") != null)
 					address = location.get("address").toString();
-				} else {
-					if (location.get("crossStreet") != null)
-						address = location.get("crossStreet").toString();
-					else
-						address = "";
-				}
+				else
+					address = "";
+				
+				if (location.get("crossStreet") != null)
+					crossSt = location.get("crossStreet").toString();
+				else
+					crossSt = "";
+				
+				formattedAddress = address + " " + crossSt;
+				if (formattedAddress.equalsIgnoreCase(" "))
+					formattedAddress = "Unknown Address";
+				
+//				if (location.get("address") != null) {
+//					address = location.get("address").toString();
+//				} else {
+//					if (location.get("crossStreet") != null)
+//						address = location.get("crossStreet").toString();
+//					else
+//						address = "Unknown Address";
+//				}
+				
 				double lat = Double.parseDouble(location.get("lat").toString());
 				double lng = Double.parseDouble(location.get("lng").toString());
 				
-				trucks.add(new FoodTruck(name, address, lat, lng));
+				trucks.add(new FoodTruck(name, formattedAddress, 
+						lat, lng, url, userCounts));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block

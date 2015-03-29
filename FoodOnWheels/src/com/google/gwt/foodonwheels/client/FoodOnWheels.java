@@ -205,6 +205,22 @@ public class FoodOnWheels implements EntryPoint {
 	 * fetchTruckListButton.
 	 */
 	private void fetchDataFromProvider() {
+//		foodTruckService
+//		.getFoodTruckFilterName("Japadog", 
+//				new AsyncCallback<List<FoodTruckData>>(){
+//
+//			@Override
+//			public void onFailure(Throwable caught) {
+//				// TODO Auto-generated method stub
+//
+//			}
+//
+//			@Override
+//			public void onSuccess(List<FoodTruckData> result) {
+//				// TODO Auto-generated method stub
+//				Window.alert("Results from FourSquare stored into server.");
+//			}
+//		});
 		foodTruckService
 		.fetchFoodTruckDataFromFourSquare(new AsyncCallback<Void>() {
 

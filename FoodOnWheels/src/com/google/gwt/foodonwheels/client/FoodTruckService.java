@@ -14,6 +14,8 @@ public interface FoodTruckService extends RemoteService {
 	
 	List<FoodTruckData> getFoodTruckDataList();
 	
+	List<FoodTruckData> getFoodTruckFilterName(String name);
+	
 	void fetchFoodTruckDataFromYelp();
 	
 	void fetchFoodTruckDataFromFourSquare();
