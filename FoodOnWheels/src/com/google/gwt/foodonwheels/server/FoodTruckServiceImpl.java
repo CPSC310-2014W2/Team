@@ -11,9 +11,6 @@ import javax.jdo.PersistenceManager;
 import javax.jdo.PersistenceManagerFactory;
 import javax.jdo.Query;
 
-import org.json.simple.JSONArray;
-import org.json.simple.JSONObject;
-import org.json.simple.parser.JSONParser;
 import org.json.simple.parser.ParseException;
 
 import com.google.gwt.foodonwheels.client.FoodTruckService;
@@ -168,5 +165,29 @@ extends RemoteServiceServlet implements FoodTruckService {
 		}
 		return truckData;
 	}
+
+	@Override
+	public List<FoodTruckData> getFoodTruckFilterName(String name) {
+		// TODO Auto-generated method stub
+		PersistenceManager pm = getPersistenceManager();
+		Query query = pm.newQuery(
+				"SELECT FROM com.google.gwt.foodonwheels.server.FoodTruck " +
+				"WHERE :name.toUpperCase().startsWith(this.abbrev)");
+		
+		List<FoodTruck> results = 
+				(List<FoodTruck>) query.execute(name.toUpperCase());
+		
+		List<FoodTruckData> truckData = new ArrayList<FoodTruckData>();
+		Iterator<FoodTruck> iter = results.iterator();
+		while (iter.hasNext())
+		{
+			FoodTruck truck = iter.next();
+			truckData.add(truck.convert());
+		}
+		
+		return truckData;
+	}
+
+
 
 }
