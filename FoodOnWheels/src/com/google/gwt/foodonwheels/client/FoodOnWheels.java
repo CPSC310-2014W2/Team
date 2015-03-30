@@ -71,11 +71,39 @@ public class FoodOnWheels implements EntryPoint {
 	// private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel truckListPanel = new VerticalPanel();
 	private Button fetchTruckListButton = new Button("fetch YELP data");
-	
-    private TabLayoutPanel tabLayout = new TabLayoutPanel(2.5, Unit.EM);
+	private HorizontalPanel searchPanel = new HorizontalPanel();
+	private Label searchLabel = new Label("Search food trucks by name:");
+	private SearchTextBox filterBox=new SearchTextBox();
 
-	private final ListDataProvider<FoodTruckData> 
-	truckDataProvider = new ListDataProvider<FoodTruckData>();
+	//	private final ListDataProvider<FoodTruckData> 
+	//	truckDataProvider = new ListDataProvider<FoodTruckData>();
+
+	private final FilteredListDataProvider<FoodTruckData>
+	truckDataProvider = new FilteredListDataProvider<FoodTruckData>(
+			new IFilter<FoodTruckData>() {
+
+				/* (non-Javadoc)
+				 * @see com.google.gwt.foodonwheels.client.IFilter#
+				 * isValid(java.lang.Object, java.lang.String)
+				 * 
+				 * A FoodTruckData object is valid if its name contains
+				 * the search keyword.
+				 */
+				@Override
+				public boolean isValid(FoodTruckData value, String keyword) {
+					if(keyword==null || value==null) {
+						return true;
+					}
+					else {
+						boolean isHit = value.getName().trim().toLowerCase()
+								.contains(keyword.trim().toLowerCase());
+						return isHit;
+					}
+				}
+			});
+
+	private TabLayoutPanel tabLayout = new TabLayoutPanel(2.5, Unit.EM);
+
 	private CellTable<FoodTruckData> 
 	truckCellTable = new CellTable<FoodTruckData>(50);
 	private ScrollPanel scrollPanel = new ScrollPanel(truckCellTable);
@@ -110,6 +138,7 @@ public class FoodOnWheels implements EntryPoint {
 		loginService.login(GWT.getHostPageBaseURL(),
 				new AsyncCallback<LoginInfo>() {
 			public void onFailure(Throwable error) {
+				Window.alert(SERVER_ERROR);
 			}
 
 			public void onSuccess(LoginInfo result) {
@@ -130,7 +159,7 @@ public class FoodOnWheels implements EntryPoint {
 
 			}});
 
-//		setUpTruckCellTable();
+		//		setUpTruckCellTable();
 
 		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		// Add a selection model to handle user selection.
@@ -150,13 +179,23 @@ public class FoodOnWheels implements EntryPoint {
 	}
 
 	private void setUpTruckCellTable() {
-		// TODO Auto-generated method stub
-		truckCellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		truckDataProvider.addDataDisplay(truckCellTable);
+		filterBox.addValueChangeHandler(new IStringValueChanged() {
+			/* (non-Javadoc)
+			 * @see com.google.gwt.foodonwheels.client.IStringValueChanged#
+			 * valueChanged(java.lang.String)
+			 * 
+			 * Use the keyword entered by user in SearchTextBox 
+			 * to filter the FoodTruckData objects.
+			 */
+			@Override
+			public void valueChanged(String newValue) {
+				truckDataProvider.setFilter(newValue);
+				truckDataProvider.refresh();
+			}
+		});
 
-		// Do not refresh the headers and footers every time the data is updated.
-//		truckCellTable.setAutoHeaderRefreshDisabled(true);
-//		truckCellTable.setAutoFooterRefreshDisabled(true);
+		truckCellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 
 		// Attach a column sort handler to the ListDataProvider to sort the list.
 		ListHandler<FoodTruckData> 
@@ -166,54 +205,44 @@ public class FoodOnWheels implements EntryPoint {
 		// Add a text column to show the name.
 		TextColumn<FoodTruckData> 
 		nameColumn = new TextColumn<FoodTruckData>() {
-
 			@Override
 			public String getValue(FoodTruckData object) {
-				// TODO Auto-generated method stub
 				return object.getName();
 			}
-
 		};
 		nameColumn.setSortable(true);
 		
-
+		// Set comparator used for sorting the name column.
 		sortHandler.setComparator(nameColumn, 
-				new Comparator<FoodTruckData>(){
-
+				new Comparator<FoodTruckData>() {
 			@Override
 			public int compare(FoodTruckData o1,
 					FoodTruckData o2) {
-				// TODO Auto-generated method stub
 				return o1.getName().compareTo(o2.getName());
 			}
 		});
 		truckCellTable.addColumn(nameColumn, "Food Truck Name");
 
+		// Add a text column to show the number of user checkin.
 		TextColumn<FoodTruckData> 
 		userCountColumn = new TextColumn<FoodTruckData>() {
-
 			@Override
 			public String getValue(FoodTruckData object) {
-				// TODO Auto-generated method stub
 				return object.getCount();
 			}
-
 		};
 		userCountColumn.setSortable(true);
-		
 
+		// Set comparator used for sorting the user checkin count column.
 		sortHandler.setComparator(userCountColumn, 
 				new Comparator<FoodTruckData>(){
-
 			@Override
 			public int compare(FoodTruckData o1,
 					FoodTruckData o2) {
-				// TODO Auto-generated method stub
 				int diff = Integer.parseInt(o1.getCount()) 
 						- Integer.parseInt(o2.getCount());
 				return Integer.signum(diff);
 			}
-
 		});
 		truckCellTable.addColumn(userCountColumn,"Checkin Count");
 
@@ -267,8 +296,8 @@ public class FoodOnWheels implements EntryPoint {
 
 						truckDataProvider.setList(result);
 						setUpTruckCellTable();
-//						truckCellTable.setRowCount(values.size(), true);
-//						truckCellTable.setRowData(0, result);
+						//						truckCellTable.setRowCount(values.size(), true);
+						//						truckCellTable.setRowData(0, result);
 					}
 				});
 	}
@@ -281,18 +310,21 @@ public class FoodOnWheels implements EntryPoint {
 
 		// Push the data into the widget.
 		truckListPanel.add(fetchTruckListButton);
-		
+
+		searchPanel.add(searchLabel);
+		searchPanel.add(filterBox);
+		truckListPanel.add(searchPanel);
 		scrollPanel.setSize("500px", "400px");
-//		truckListPanel.add(scrollPanel);
+		//		truckListPanel.add(scrollPanel);
 		tabLayout.add(scrollPanel, "[All Food Trucks]");
 		tabLayout.add(favScrollPanel, "[Favourites]");
 		tabLayout.setAnimationDuration(1000);
 		tabLayout.getElement().getStyle().setMargin(10, Unit.PX);
 		tabLayout.setSize("500px", "400px");
 		truckListPanel.add(tabLayout);
-//		DecoratorPanel decoratorPanel = new DecoratorPanel();
-//		decoratorPanel.add(scrollPanel);
-//		truckListPanel.add(decoratorPanel);
+		//		DecoratorPanel decoratorPanel = new DecoratorPanel();
+		//		decoratorPanel.add(scrollPanel);
+		//		truckListPanel.add(decoratorPanel);
 		//		truckListPanel.add(truckCellList);
 		truckListPanel.add(lastUpdatedLabel);
 		truckListPanel.add(signOutLink);
