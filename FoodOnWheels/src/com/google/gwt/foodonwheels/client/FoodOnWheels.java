@@ -73,7 +73,7 @@ public class FoodOnWheels implements EntryPoint {
 	private Button fetchTruckListButton = new Button("fetch YELP data");
 	private HorizontalPanel searchPanel = new HorizontalPanel();
 	private Label searchLabel = new Label("Search food trucks by name:");
-	private SearchTextBox filterBox=new SearchTextBox();
+	private SearchTextBox filterBox = new SearchTextBox();
 
 	//	private final ListDataProvider<FoodTruckData> 
 	//	truckDataProvider = new ListDataProvider<FoodTruckData>();
@@ -81,7 +81,6 @@ public class FoodOnWheels implements EntryPoint {
 	private final FilteredListDataProvider<FoodTruckData>
 	truckDataProvider = new FilteredListDataProvider<FoodTruckData>(
 			new IFilter<FoodTruckData>() {
-
 				/* (non-Javadoc)
 				 * @see com.google.gwt.foodonwheels.client.IFilter#
 				 * isValid(java.lang.Object, java.lang.String)
@@ -109,8 +108,8 @@ public class FoodOnWheels implements EntryPoint {
 	private ScrollPanel scrollPanel = new ScrollPanel(truckCellTable);
 	private ScrollPanel favScrollPanel = new ScrollPanel();
 
-	private CellList<String> truckCellList = 
-			new CellList<String>(new TextCell());
+//	private CellList<String> truckCellList = 
+//			new CellList<String>(new TextCell());
 	private Label lastUpdatedLabel = new Label();
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
@@ -161,21 +160,21 @@ public class FoodOnWheels implements EntryPoint {
 
 		//		setUpTruckCellTable();
 
-		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-		// Add a selection model to handle user selection.
-		final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
-		truckCellList.setSelectionModel(selectionModel);
-
-		selectionModel.addSelectionChangeHandler(
-				new SelectionChangeEvent.Handler() {
-					public void onSelectionChange
-					(SelectionChangeEvent event) {
-						String selected = selectionModel.getSelectedObject();
-						if (selected != null) {
-							Window.alert("You selected: " + selected);
-						}
-					}
-				});
+//		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+//		// Add a selection model to handle user selection.
+//		final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
+//		truckCellList.setSelectionModel(selectionModel);
+//
+//		selectionModel.addSelectionChangeHandler(
+//				new SelectionChangeEvent.Handler() {
+//					public void onSelectionChange
+//					(SelectionChangeEvent event) {
+//						String selected = selectionModel.getSelectedObject();
+//						if (selected != null) {
+//							Window.alert("You selected: " + selected);
+//						}
+//					}
+//				});
 	}
 
 	private void setUpTruckCellTable() {
@@ -288,11 +287,11 @@ public class FoodOnWheels implements EntryPoint {
 					@Override
 					public void onSuccess(List<FoodTruckData> result) {
 						//TODO
-						List<String> values = new ArrayList<String>();
-						for (int k = 0; k < result.size(); k++)
-							values.add(result.get(k).toString());
-						truckCellList.setRowCount(values.size(), true);
-						truckCellList.setRowData(0, values);
+//						List<String> values = new ArrayList<String>();
+//						for (int k = 0; k < result.size(); k++)
+//							values.add(result.get(k).toString());
+//						truckCellList.setRowCount(values.size(), true);
+//						truckCellList.setRowData(0, values);
 
 						truckDataProvider.setList(result);
 						setUpTruckCellTable();
@@ -315,16 +314,12 @@ public class FoodOnWheels implements EntryPoint {
 		searchPanel.add(filterBox);
 		truckListPanel.add(searchPanel);
 		scrollPanel.setSize("500px", "400px");
-		//		truckListPanel.add(scrollPanel);
 		tabLayout.add(scrollPanel, "[All Food Trucks]");
 		tabLayout.add(favScrollPanel, "[Favourites]");
 		tabLayout.setAnimationDuration(1000);
 		tabLayout.getElement().getStyle().setMargin(10, Unit.PX);
 		tabLayout.setSize("500px", "400px");
 		truckListPanel.add(tabLayout);
-		//		DecoratorPanel decoratorPanel = new DecoratorPanel();
-		//		decoratorPanel.add(scrollPanel);
-		//		truckListPanel.add(decoratorPanel);
 		//		truckListPanel.add(truckCellList);
 		truckListPanel.add(lastUpdatedLabel);
 		truckListPanel.add(signOutLink);
