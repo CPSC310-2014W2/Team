@@ -108,8 +108,8 @@ public class FoodOnWheels implements EntryPoint {
 	private ScrollPanel scrollPanel = new ScrollPanel(truckCellTable);
 	private ScrollPanel favScrollPanel = new ScrollPanel();
 
-//	private CellList<String> truckCellList = 
-//			new CellList<String>(new TextCell());
+	//	private CellList<String> truckCellList = 
+	//			new CellList<String>(new TextCell());
 	private Label lastUpdatedLabel = new Label();
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
@@ -160,21 +160,21 @@ public class FoodOnWheels implements EntryPoint {
 
 		//		setUpTruckCellTable();
 
-//		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
-//		// Add a selection model to handle user selection.
-//		final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
-//		truckCellList.setSelectionModel(selectionModel);
-//
-//		selectionModel.addSelectionChangeHandler(
-//				new SelectionChangeEvent.Handler() {
-//					public void onSelectionChange
-//					(SelectionChangeEvent event) {
-//						String selected = selectionModel.getSelectedObject();
-//						if (selected != null) {
-//							Window.alert("You selected: " + selected);
-//						}
-//					}
-//				});
+		//		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		//		// Add a selection model to handle user selection.
+		//		final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
+		//		truckCellList.setSelectionModel(selectionModel);
+		//
+		//		selectionModel.addSelectionChangeHandler(
+		//				new SelectionChangeEvent.Handler() {
+		//					public void onSelectionChange
+		//					(SelectionChangeEvent event) {
+		//						String selected = selectionModel.getSelectedObject();
+		//						if (selected != null) {
+		//							Window.alert("You selected: " + selected);
+		//						}
+		//					}
+		//				});
 	}
 
 	private void setUpTruckCellTable() {
@@ -194,7 +194,9 @@ public class FoodOnWheels implements EntryPoint {
 			}
 		});
 
-		truckCellTable.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		truckCellTable.setAutoHeaderRefreshDisabled(true);
+		truckCellTable
+		.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.DISABLED);
 
 		// Attach a column sort handler to the ListDataProvider to sort the list.
 		ListHandler<FoodTruckData> 
@@ -210,7 +212,7 @@ public class FoodOnWheels implements EntryPoint {
 			}
 		};
 		nameColumn.setSortable(true);
-		
+
 		// Set comparator used for sorting the name column.
 		sortHandler.setComparator(nameColumn, 
 				new Comparator<FoodTruckData>() {
@@ -261,9 +263,9 @@ public class FoodOnWheels implements EntryPoint {
 						selected = selectionModel.getSelectedObject();
 
 						if (selected != null) {
-					//		Window.alert("You selected: " + selected);
+							//		Window.alert("You selected: " + selected);
 							cartMap.openNewInfoWindow(selected);
-							
+
 						}
 					}
 				});
@@ -289,11 +291,11 @@ public class FoodOnWheels implements EntryPoint {
 					@Override
 					public void onSuccess(List<FoodTruckData> result) {
 						//TODO
-//						List<String> values = new ArrayList<String>();
-//						for (int k = 0; k < result.size(); k++)
-//							values.add(result.get(k).toString());
-//						truckCellList.setRowCount(values.size(), true);
-//						truckCellList.setRowData(0, values);
+						//						List<String> values = new ArrayList<String>();
+						//						for (int k = 0; k < result.size(); k++)
+						//							values.add(result.get(k).toString());
+						//						truckCellList.setRowCount(values.size(), true);
+						//						truckCellList.setRowData(0, values);
 
 						truckDataProvider.setList(result);
 						setUpTruckCellTable();
