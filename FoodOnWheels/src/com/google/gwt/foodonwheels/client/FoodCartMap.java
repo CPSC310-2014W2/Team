@@ -32,6 +32,8 @@ public class FoodCartMap {
 	private boolean mapCanvas;
 	private final FoodTruckServiceAsync foodTruckService = 
 			GWT.create(FoodTruckService.class);
+	private MapWidget currentMap;
+	
 	
 	//new icon to display user on map
 	
@@ -97,22 +99,15 @@ public class FoodCartMap {
 					final LatLng cartLatLng =LatLng.newInstance(result.get(k).getLatitude(), result.get(k).getLongitude());
 					Marker cartMarker = new Marker(cartLatLng);
 					map.addOverlay(cartMarker);
-					final InfoWindowContent cartDescription = 
-							new InfoWindowContent("<p>" + "<strong>" + result.get(k).getName()+ "</strong> " + "<br>" + checkAddress(result.get(k))+ 
-									"<br>"+"Check-in count: "+ result.get(k).getCount()+ "<br>" + "Website: " + result.get(k).getUrl() + "<br>"+"Rank = " + result.get(k).getRank()+ "</p>");
-					cartMarker.addMarkerClickHandler(new MarkerClickHandler(){
-						
-
+					final InfoWindowContent cartDescription = cartInfo(result.get(k));
+						cartMarker.addMarkerClickHandler(new MarkerClickHandler(){
 						@Override
 						public void onClick(MarkerClickEvent event) {
 							// TODO Auto-generated method stub						 
 							 map.getInfoWindow().open(cartLatLng, cartDescription);
 						}
 					});
-					 
-	
-					
-					
+					 				
 				}
 
 			}
@@ -150,25 +145,38 @@ public class FoodCartMap {
 		
 		
 		
-//Method to check if  address field of FoodDataCart is null
 
-		// Add an info window to highlight a point of interest
-//		map.getInfoWindow().open(map.getCenter(),
-//				new InfoWindowContent("Downtown Vancouver"));
 
-		// final DockLayoutPanel dock = new DockLayoutPanel(Unit.PX);
-		// dock.addNorth(map, 500);
-		// Add the map to the HTML host page
-		
+        currentMap = map;
 		RootPanel.get("map-placement").add(map);
 		System.out.println("build function ran");
 	}
 	
+//Method to return cart information given a food card.
+	public InfoWindowContent cartInfo(FoodTruckData cart){
+		return 
+	new InfoWindowContent("<p>" + "<strong>" + cart.getName()+ "</strong> " + "<br>" + checkAddress(cart)+ 
+									"<br>"+"Check-in count: "+ cart.getCount()+ "<br>" + "Website: " + cart.getUrl() + "<br>"+"Rank = " + cart.getRank()+ "</p>");
+		
+		
+	}
+	
+//Method to check if  address field of FoodDataCart is null
 	public String checkAddress(FoodTruckData address){
 		if(address.getAddress().length() == 0){
 			return "(No address in database!)";
 		}
 		return "" + address.getAddress();}
+	
+
+//Method opens info window at specific cart location and provides details of cart.
+	public void openNewInfoWindow(FoodTruckData cart){
+		final InfoWindowContent cartDescription =  cartInfo(cart);
+		final LatLng cartLatLng =LatLng.newInstance(cart.getLatitude(), cart.getLongitude());
+		currentMap.getInfoWindow().open(cartLatLng, cartDescription);
+		
+			
+	}
 	
 
 }

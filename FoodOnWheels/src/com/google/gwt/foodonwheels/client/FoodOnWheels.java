@@ -261,7 +261,9 @@ public class FoodOnWheels implements EntryPoint {
 						selected = selectionModel.getSelectedObject();
 
 						if (selected != null) {
-							Window.alert("You selected: " + selected);
+					//		Window.alert("You selected: " + selected);
+							cartMap.openNewInfoWindow(selected);
+							
 						}
 					}
 				});
