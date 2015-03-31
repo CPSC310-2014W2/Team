@@ -36,31 +36,41 @@ public class FoodTruck implements Serializable {
 	@Persistent
 	private String website;
 	@Persistent
-	private String phone;
+	private int userCounts4square;
 	@Persistent
 	private String cuisine;
-	
-	
+
+
 
 	public FoodTruck(String name, String address, 
 			double latitude, double longitude, 
-			String imageUrl, String website, 
-			String phone, String cuisine) {
+			String website, String count, 
+			String imageUrl, String cuisine) {
 		this.name = name;
 		this.address = address;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.imageUrl = imageUrl;
 		this.website = website;
-		this.phone = phone;
+		try {
+			this.userCounts4square = Integer.parseInt(count);
+		} catch (NumberFormatException e) {
+			this.userCounts4square = 0;
+		}
 		this.cuisine = cuisine;
+	}
+	
+	public FoodTruck(String name, String address, 
+			double latitude, double longitude, 
+			String website, String count) {
+		this(name, address, latitude, longitude, website, count, "", "");
 	}
 
 	public FoodTruck(String name, String address, 
 			double latitude, double longitude) {
 		this(name, address, latitude, longitude, "", "", "", "");
 	}
-	
+
 	public FoodTruck(String name, String address) {
 		this(name, address, 0, 0);
 	}
@@ -70,7 +80,7 @@ public class FoodTruck implements Serializable {
 		String address = this.getAddress();
 		double latitude = this.getLatitude();
 		double longitude = this.getLongitude();
-		
+
 		return new FoodTruckData(name, address, latitude, longitude);
 	}
 
@@ -90,8 +100,8 @@ public class FoodTruck implements Serializable {
 		return longitude;
 	}
 
-	public String getPhone() {
-		return phone;
+	public String getUserCounts4square() {
+		return Integer.toString(userCounts4square);
 	}
 
 	public String getCuisine() {
