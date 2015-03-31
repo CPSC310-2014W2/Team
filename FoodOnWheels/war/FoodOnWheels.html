@@ -15,33 +15,24 @@
 
 </head>
 <body>
-	<style>
-.topright {
-	position: relative;
-	top: 0px;
-	right: 5px;
-	text-align: right;
-}
-</style>
 	<div class="container">
 		<div class="jumbotron">
 <style>
-h1 {
-	text-shadow: 5px 5px 5px #D2B48C;
-}
+
 </style>
 			<h1>Food On Wheels</h1>
 			<p>Find great food vendors in Vancouver!</p>
 			<br>
-			<fb:login-button scope="public_profile,email"
-				onlogin="checkLoginState();" size="large" show_faces="false"
-				auto_logout_link="true" style="float: right;"></fb:login-button>
-			<br> <br>
-			<fb:like href="http://food-on-wheels.appspot.com"
-				layout="button_count" action="like" show_faces="true" share="true"
-				style="float: right;"></fb:like>
+			<fb:login-button scope="public_profile,email" onlogin="checkLoginState();" size="large" 
+							 show_faces="false" auto_logout_link="true" style="float: right;"></fb:login-button>
 			<br>
-
+			<br>
+			<fb:like href="http://food-on-wheels.appspot.com" layout="button_count" action="like" 
+					 show_faces="true" share="true" style="float: right;"></fb:like>
+			<br>
+			<g:plusone size="medium" data-annotation="bubble"></g:plusone>
+			<br>
+			<div class="g-plus" data-action="share" data-annotation="bubble"></div>
 			<div class="container">
 				<br>
 				<div id="myCarousel" class="carousel slide" data-ride="carousel">
@@ -115,7 +106,7 @@ h1 {
 					CPSC 310 Term Project</button>
 				<div id="demo" class="collapse">
 					<br>
-					<p>CPSC 310 Term Project: Team</p>
+					<p>TEAM</p>
 					Developed By:<br>April Choi<br>Douglas Wong<br>Devin
 					Li<br>Graham Lee
 				</div>
@@ -126,9 +117,6 @@ h1 {
 				<h3>Vancouver Map:</h3>
 				<div id=map-placement></div>
 				<br>
-				<g:plusone size="medium" data-annotation="bubble"></g:plusone>
-				<br>
-				<div class="g-plus" data-action="share" data-annotation="bubble"></div>
 			</div>
 			<div class="col-sm-5" id="foodTruckList">
 				<h3>Food Vendor list:</h3>

@@ -80,6 +80,8 @@ public class FoodOnWheels implements EntryPoint {
 	private Anchor signOutLink = new Anchor("Sign Out");
 	private Label loginLabel = new Label("Sign in to customize your favourite food vendors list!");
 	private TabLayoutPanel tab = new TabLayoutPanel(1.5, Unit.EM);
+	private TabPanel panel = new TabPanel();
+	private FlowPanel flowpanel;
 	
 	private final FoodTruckServiceAsync foodTruckService = GWT.create(FoodTruckService.class);
 	
@@ -96,7 +98,7 @@ public class FoodOnWheels implements EntryPoint {
 	 * This is the entry point method.
 	 */
 	public void onModuleLoad() {
-
+		FavTable();
 		// Check login status using login service.
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
 		loginService.login(GWT.getHostPageBaseURL(),
@@ -235,23 +237,10 @@ public class FoodOnWheels implements EntryPoint {
 	}
 
 	private void FavTable(){
-		String text1 = "Lorem ipsum dolor sit amet...";
-		String text2 = "Sed egestas, arcu nec accumsan...";
-		String text3 = "Proin tristique, elit at blandit...";
-		TabPanel panel = new TabPanel();
-		FlowPanel flowpanel; 
-
-		flowpanel = new FlowPanel();
-		flowpanel.add(new Label(text1));
-		panel.add(flowpanel, "Food Vendor Locations");
-
-		flowpanel = new FlowPanel();
-		flowpanel.add(new Label(text2));
-		panel.add(flowpanel, "Favourites");
-
-		flowpanel = new FlowPanel();
-		flowpanel.add(new Label(text3));
-		panel.add(flowpanel, "Admin Login");
+		
+		panel.add(truckCellList, "Food Vendor Locations");
+		panel.add(loginPanel, "Favourites");
+		panel.add(truckListPanel, "Admin Login");
 
 		panel.selectTab(0);
 

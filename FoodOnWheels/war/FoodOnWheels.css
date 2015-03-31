@@ -7,6 +7,7 @@ h1 {
   font-weight: bold;
   color: #777777;
   margin: 40px 0px 70px;
+  text-shadow: 5px 5px 5px #D2B48C;
   text-align: center;
 }
 
@@ -49,4 +50,10 @@ h1 {
 
 .carousel-inner>.item>img:hover {
 	border: 1px solid #000000;
+}
+.topright {
+	position: relative;
+	top: 0px;
+	right: 5px;
+	text-align: right;
 }
