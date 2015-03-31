@@ -32,3 +32,35 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.gwt-TabLayoutPanel 
+{ 
+    height: 300px; 
+} 
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTabs { 
+} 
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelContent { 
+  border-color: #e6e7e8; 
+  border-style: solid; 
+  border-width: 3px 2px 2px; 
+  overflow: hidden; 
+  padding: 6px; 
+  background: #FFFFFF;  
+} 
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab { 
+  margin-left: 6px; 
+  padding: 3px 8px 3px 8px; 
+  cursor: pointer; 
+  cursor: hand; 
+  color: black; 
+  font-size: 1.2em; 
+  color: #ff974d; 
+  text-align: center; 
+  background: #ca6e00; 
+} 
+.gwt-TabLayoutPanel .gwt-TabLayoutPanelTab-selected { 
+  cursor: default; 
+  background: #ffc782; 
+  font-size: 1.2em; 
+  color: #FFFFFF; 
+}

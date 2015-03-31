@@ -330,8 +330,8 @@ public class FoodOnWheels implements EntryPoint {
 		searchPanel.add(filterBox);
 		truckListPanel.add(searchPanel);
 		scrollPanel.setSize("500px", "400px");
-		tabLayout.add(scrollPanel, "[All Food Trucks]");
-		tabLayout.add(favScrollPanel, "[Favourites]");
+		tabLayout.add(scrollPanel, "All Food Vendors");
+		tabLayout.add(favScrollPanel, "Favourites");
 		tabLayout.setAnimationDuration(1000);
 		tabLayout.getElement().getStyle().setMargin(10, Unit.PX);
 		tabLayout.setSize("500px", "400px");
