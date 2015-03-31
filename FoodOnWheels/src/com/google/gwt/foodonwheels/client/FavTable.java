@@ -12,7 +12,6 @@ public class FavTable{
 	tab.add(new HTML("that"), "[that]");
 	tab.add(new HTML("the other"), "[the other]");
 	
-	RootLayoutPanel root = RootLayoutPanel.get();
-	root.add(tab);
+	RootLayoutPanel.get().add(tab);
 	}
 }

@@ -32,3 +32,21 @@ h1 {
 #closeButton {
   margin: 15px 6px 6px;
 }
+
+.carousel .item {
+	background: #F9F9F9;
+	border: 1px solid #E0E0E0;
+	overflow: hidden;
+}
+
+.carousel-inner>.item>img {
+	border: 1px solid #DDDDDD;
+	float: left;
+	margin: 0pt 3px;
+	height: none;
+	width: 100%;
+}
+
+.carousel-inner>.item>img:hover {
+	border: 1px solid #000000;
+}

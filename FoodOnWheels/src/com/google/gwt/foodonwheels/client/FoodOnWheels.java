@@ -38,11 +38,14 @@ import com.google.gwt.user.client.ui.Anchor;
 import com.google.gwt.user.client.ui.Button;
 import com.google.gwt.user.client.ui.DialogBox;
 import com.google.gwt.user.client.ui.DockLayoutPanel;
+import com.google.gwt.user.client.ui.FlowPanel;
 import com.google.gwt.user.client.ui.HTML;
 import com.google.gwt.user.client.ui.HorizontalPanel;
 import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootLayoutPanel;
 import com.google.gwt.user.client.ui.RootPanel;
+import com.google.gwt.user.client.ui.TabLayoutPanel;
+import com.google.gwt.user.client.ui.TabPanel;
 import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
@@ -56,6 +59,7 @@ public class FoodOnWheels implements EntryPoint {
 	 * The message displayed to the user when the server cannot be reached or
 	 * returns an error.
 	 */
+	
 	private static final String SERVER_ERROR = "An error occurred while "
 			+ "attempting to contact the server. Please check your network "
 			+ "connection and try again.";
@@ -68,18 +72,16 @@ public class FoodOnWheels implements EntryPoint {
 	// private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel truckListPanel = new VerticalPanel();
 	private Button fetchTruckListButton = new Button("fetch YELP data");
-	private CellList<String> truckCellList = new CellList<String>(
-			new TextCell());
+	private CellList<String> truckCellList = new CellList<String>(new TextCell());
 	private Label lastUpdatedLabel = new Label();
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
-	private Label loginLabel = new Label(
-			"Sign in to customize your favourite food vendors list!");
-
-	private final FoodTruckServiceAsync foodTruckService = GWT
-			.create(FoodTruckService.class);
+	private Label loginLabel = new Label("Sign in to customize your favourite food vendors list!");
+	private TabLayoutPanel tab = new TabLayoutPanel(1.5, Unit.EM);
+	
+	private final FoodTruckServiceAsync foodTruckService = GWT.create(FoodTruckService.class);
 	
 	//Needed to create FoodCartMap object
 	FoodCartMap cartMap = new FoodCartMap(true);
@@ -106,22 +108,19 @@ public class FoodOnWheels implements EntryPoint {
 						loginInfo = result;
 						if (loginInfo.isLoggedIn()) {
 							loadFoodTruckDataList();
+							
 						} else {
 							loadLogin();
 						}
 					}
 				});
 
-
-
-		truckCellList
-				.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
+		truckCellList.setKeyboardSelectionPolicy(KeyboardSelectionPolicy.ENABLED);
 		// Add a selection model to handle user selection.
 		final SingleSelectionModel<String> selectionModel = new SingleSelectionModel<String>();
 		truckCellList.setSelectionModel(selectionModel);
 
-		selectionModel
-		.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
+		selectionModel.addSelectionChangeHandler(new SelectionChangeEvent.Handler() {
 			public void onSelectionChange
 			(SelectionChangeEvent event) {
 				String selected = selectionModel.getSelectedObject();
@@ -136,13 +135,12 @@ public class FoodOnWheels implements EntryPoint {
 		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false, new Runnable() {
 		public void run() {
 			cartMap.buildUi();
+			FavTable();
 
-}});
-		
-		
+				}
+			}
+		);
 	}
-
-
 
 	private void loadLogin() {
 		// Assemble login panel.
@@ -153,8 +151,7 @@ public class FoodOnWheels implements EntryPoint {
 	}
 	
 	private void loadFoodTruckData() {
-		foodTruckService
-		.getFoodTruckDataList(new AsyncCallback<List<FoodTruckData>>() {
+		foodTruckService.getFoodTruckDataList(new AsyncCallback<List<FoodTruckData>>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -221,8 +218,7 @@ public class FoodOnWheels implements EntryPoint {
 //				Window.alert("Results from FourSquare stored into server.");
 //			}
 //		});
-		foodTruckService
-		.fetchFoodTruckDataFromFourSquare(new AsyncCallback<Void>() {
+		foodTruckService.fetchFoodTruckDataFromFourSquare(new AsyncCallback<Void>() {
 
 			@Override
 			public void onFailure(Throwable caught) {
@@ -236,5 +232,31 @@ public class FoodOnWheels implements EntryPoint {
 			}
 
 		});
+	}
+
+	private void FavTable(){
+		String text1 = "Lorem ipsum dolor sit amet...";
+		String text2 = "Sed egestas, arcu nec accumsan...";
+		String text3 = "Proin tristique, elit at blandit...";
+		TabPanel panel = new TabPanel();
+		FlowPanel flowpanel; 
+
+		flowpanel = new FlowPanel();
+		flowpanel.add(new Label(text1));
+		panel.add(flowpanel, "Food Vendor Locations");
+
+		flowpanel = new FlowPanel();
+		flowpanel.add(new Label(text2));
+		panel.add(flowpanel, "Favourites");
+
+		flowpanel = new FlowPanel();
+		flowpanel.add(new Label(text3));
+		panel.add(flowpanel, "Admin Login");
+
+		panel.selectTab(0);
+
+		panel.setSize("500px", "250px");
+		panel.addStyleName("table-center");
+		RootPanel.get().add(panel);
 	}
 }

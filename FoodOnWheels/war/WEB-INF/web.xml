@@ -1,35 +1,49 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <web-app xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
-         xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
+	xsi:schemaLocation="http://java.sun.com/xml/ns/javaee 
               http://java.sun.com/xml/ns/javaee/web-app_2_5.xsd"
-         version="2.5"
-         xmlns="http://java.sun.com/xml/ns/javaee">
+	version="2.5" xmlns="http://java.sun.com/xml/ns/javaee">
+	<module rename-to='foodtruck'>
+		<!-- Inherit the core Web Toolkit stuff. -->
+		<inherits name='com.google.gwt.user.User' />
 
-  <!-- Servlets -->
-    
-  <servlet>
-    <servlet-name>truckServlet</servlet-name>
-    <servlet-class>com.google.gwt.foodonwheels.server.FoodTruckServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet>
-    <servlet-name>loginService</servlet-name>
-    <servlet-class>com.google.gwt.foodonwheels.server.LoginServiceImpl</servlet-class>
-  </servlet>
-  
-  <servlet-mapping>
-    <servlet-name>truckServlet</servlet-name>
-    <url-pattern>/foodonwheels/truck</url-pattern>
-  </servlet-mapping>
-  
-    <servlet-mapping>
-    <servlet-name>loginService</servlet-name>
-    <url-pattern>/foodonwheels/login</url-pattern>
-  </servlet-mapping>
-  
-  <!-- Default page to serve -->
-  <welcome-file-list>
-    <welcome-file>FoodOnWheels.html</welcome-file>
-  </welcome-file-list>
+		<!-- Inherit the default GWT style sheet. You can change -->
+		<!-- the theme of your GWT application by uncommenting -->
+		<!-- any one of the following lines. -->
+		<inherits name='com.google.gwt.user.theme.standard.Standard' />
+		<!-- <inherits name="com.google.gwt.user.theme.chrome.Chrome"/> -->
+		<!-- <inherits name="com.google.gwt.user.theme.dark.Dark"/> -->
+
+		<!-- Other module inherits -->
+
+		<!-- Specify the app entry point class. -->
+		<entry-point class='com.google.gwt.sample.stockwatcher.client.FoodOnWheels' />
+	</module>
+	<!-- Servlets -->
+
+	<servlet>
+		<servlet-name>truckServlet</servlet-name>
+		<servlet-class>com.google.gwt.foodonwheels.server.FoodTruckServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet>
+		<servlet-name>loginService</servlet-name>
+		<servlet-class>com.google.gwt.foodonwheels.server.LoginServiceImpl</servlet-class>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>truckServlet</servlet-name>
+		<url-pattern>/foodonwheels/truck</url-pattern>
+	</servlet-mapping>
+
+	<servlet-mapping>
+		<servlet-name>loginService</servlet-name>
+		<url-pattern>/foodonwheels/login</url-pattern>
+	</servlet-mapping>
+
+	<!-- Default page to serve -->
+	<welcome-file-list>
+		<welcome-file>FoodOnWheels.html</welcome-file>
+	</welcome-file-list>
 
 </web-app>
