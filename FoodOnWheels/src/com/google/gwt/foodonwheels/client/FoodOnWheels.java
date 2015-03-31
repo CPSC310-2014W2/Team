@@ -119,11 +119,9 @@ public class FoodOnWheels implements EntryPoint {
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
-	private Label loginLabel = new Label(
-			"Sign in to customize your favourite food vendors list!");
+	private Label loginLabel = new Label("Sign in to customize your favourite food vendors list!");
 	private TabLayoutPanel tab = new TabLayoutPanel(1.5, Unit.EM);
 	private TabPanel panel = new TabPanel();
-	private FlowPanel flowpanel;
 
 	/**
 	 * Remote remote service proxy to talk to the server-side FoodTruckService
@@ -375,10 +373,8 @@ public class FoodOnWheels implements EntryPoint {
 
 	private void FavTable(){
 		
-		panel.add(truckCellTable, "Food Vendor Locations");
-		panel.add(loginPanel, "Favourites");
-		panel.add(truckListPanel, "Admin Login");
-
+		panel.add(truckCellTable, "[Food Vendors]");
+		panel.add(loginPanel, "[Favourites]");
 		panel.selectTab(0);
 
 		panel.setSize("500px", "250px");

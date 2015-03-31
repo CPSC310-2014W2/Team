@@ -45,7 +45,7 @@ public class FoodTruck implements Serializable {
 	public FoodTruck(String name, String address, 
 			double latitude, double longitude, 
 			String website, String count, 
-			String imageUrl, String cuisine) {
+			String imageUrl, String cuisine, int score) {
 		this.name = name;
 		this.address = address;
 		this.latitude = latitude;
@@ -58,17 +58,18 @@ public class FoodTruck implements Serializable {
 			this.userCounts4square = 0;
 		}
 		this.cuisine = cuisine;
+		this.score = score;
 	}
 	
 	public FoodTruck(String name, String address, 
 			double latitude, double longitude, 
-			String website, String count) {
-		this(name, address, latitude, longitude, website, count, "", "");
+			String website, String count, int score) {
+		this(name, address, latitude, longitude, website, count, "", "", 0);
 	}
 
 	public FoodTruck(String name, String address, 
 			double latitude, double longitude) {
-		this(name, address, latitude, longitude, "", "", "", "");
+		this(name, address, latitude, longitude, "", "", "", "", 0);
 	}
 
 	public FoodTruck(String name, String address) {
@@ -82,8 +83,9 @@ public class FoodTruck implements Serializable {
 		double longitude = this.getLongitude();
 		String url = this.getWebsite();
 		String count = this.getUserCounts4square();
+		int score = this.getScore();
 
-		return new FoodTruckData(name, address, latitude, longitude, url, count);
+		return new FoodTruckData(name, address, latitude, longitude, url, count, score);
 	}
 
 	public String getName() {

@@ -65,7 +65,7 @@ public class FourSquareVenueSearchParser {
 				double lng = Double.parseDouble(location.get("lng").toString());
 				
 				trucks.add(new FoodTruck(name, formattedAddress, 
-						lat, lng, url, userCounts));
+						lat, lng, url, userCounts, 0));
 			}
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
