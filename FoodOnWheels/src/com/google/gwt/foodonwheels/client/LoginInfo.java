@@ -8,6 +8,7 @@ public class LoginInfo implements Serializable {
 	 */
 
 	private boolean loggedIn = false;
+	private boolean userAdmin = false;
 	private String loginUrl;
 	private String logoutUrl;
 	private String emailAddress;
@@ -19,6 +20,14 @@ public class LoginInfo implements Serializable {
 
 	public void setLoggedIn(boolean loggedIn) {
 		this.loggedIn = loggedIn;
+	}
+
+	public boolean isUserAdmin() {
+		return userAdmin;
+	}
+
+	public void setUserAdmin(boolean userAdmin) {
+		this.userAdmin = userAdmin;
 	}
 
 	public String getLoginUrl() {

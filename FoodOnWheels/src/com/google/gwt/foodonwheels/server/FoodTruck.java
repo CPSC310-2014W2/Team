@@ -80,8 +80,10 @@ public class FoodTruck implements Serializable {
 		String address = this.getAddress();
 		double latitude = this.getLatitude();
 		double longitude = this.getLongitude();
+		String url = this.getWebsite();
+		String count = this.getUserCounts4square();
 
-		return new FoodTruckData(name, address, latitude, longitude);
+		return new FoodTruckData(name, address, latitude, longitude, url, count);
 	}
 
 	public String getName() {

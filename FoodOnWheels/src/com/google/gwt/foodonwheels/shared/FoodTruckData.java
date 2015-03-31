@@ -13,21 +13,35 @@ public class FoodTruckData implements Serializable {
 	private double latitude;
 	private double longitude;
 	private int rank;
+	private String url;
+	private String count;
 	
+	/**
+	 * Stub required for serialization. 
+	 */
 	public FoodTruckData() {}
 
 	public FoodTruckData(String name, String address, 
-			double latitude, double longitude, int rank) {
+			double latitude, double longitude,
+			String url, String count, int rank) {
 		this.name = name;
 		this.address = address;
 		this.latitude = latitude;
 		this.longitude = longitude;
 		this.rank = rank;
+		this.url = url;
+		this.count = count;
+	}
+	
+	public FoodTruckData(String name, String address, 
+			double latitude, double longitude,
+			String url, String count) {
+		this(name, address, latitude, longitude, url, count, UNDEFINED_RANK);
 	}
 
 	public FoodTruckData(String name, String address, 
 			double latitude, double longitude) {
-		this(name, address, latitude, longitude, UNDEFINED_RANK);
+		this(name, address, latitude, longitude, "None", "0", UNDEFINED_RANK);
 	}
 
 	@Override
@@ -61,4 +75,11 @@ public class FoodTruckData implements Serializable {
 		return longitude;
 	}
 
+	public String getUrl() {
+		return url;
+	}
+
+	public String getCount() {
+		return count;
+	}
 }
