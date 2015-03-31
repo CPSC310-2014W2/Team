@@ -143,7 +143,7 @@ public class FoodOnWheels implements EntryPoint {
 			public void onSuccess(LoginInfo result) {
 				loginInfo = result;
 				if (loginInfo.isLoggedIn()) {
-					loadFoodTruckDataList();
+					setUserView();
 				} else {
 					loadLogin();
 				}
@@ -305,15 +305,22 @@ public class FoodOnWheels implements EntryPoint {
 				});
 	}
 
-	private void loadFoodTruckDataList() {
-		// Set up sign out hyperlink.
-		signOutLink.setHref(loginInfo.getLogoutUrl());
-
-		loadFoodTruckData();
-
+	private void setUserView() {
 		// Push the data into the widget.
 		truckListPanel.add(fetchTruckListButton);
+		// Listen for mouse events on the fetch YELP data button.
+		fetchTruckListButton.addClickHandler(
+				new ClickHandler() {
+					public void onClick(ClickEvent event) {
+						fetchDataFromProvider();
+					};
+				});
 
+		loadFoodTruckData();
+		setTruckListPanel();
+	}
+
+	private void setTruckListPanel() {
 		searchPanel.add(searchLabel);
 		searchPanel.add(filterBox);
 		truckListPanel.add(searchPanel);
@@ -326,18 +333,13 @@ public class FoodOnWheels implements EntryPoint {
 		truckListPanel.add(tabLayout);
 		//		truckListPanel.add(truckCellList);
 		truckListPanel.add(lastUpdatedLabel);
+
+		// Set up sign out hyperlink.
+		signOutLink.setHref(loginInfo.getLogoutUrl());
 		truckListPanel.add(signOutLink);
 
 		// Add it to the root panel.
 		RootPanel.get("foodTruckList").add(truckListPanel);
-
-		// Listen for mouse events on the fetch YELP data button.
-		fetchTruckListButton.addClickHandler(
-				new ClickHandler() {
-					public void onClick(ClickEvent event) {
-						fetchDataFromProvider();
-					};
-				});
 	}
 
 	/**
@@ -357,7 +359,7 @@ public class FoodOnWheels implements EntryPoint {
 					public void onSuccess(Void result) {
 						Window.alert("Food truck data from provider stored " 
 								+ "into app engine datastore.");
-						loadFoodTruckDataList();
+						setUserView();
 					}
 				});
 	}
