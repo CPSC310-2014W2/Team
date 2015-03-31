@@ -69,7 +69,6 @@ public class FoodOnWheels implements EntryPoint {
 	 * service.
 	 */
 
-	// private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel truckListPanel = new VerticalPanel();
 	private Button fetchTruckListButton = new Button("fetch YELP data");
 	private CellList<String> truckCellList = new CellList<String>(new TextCell());
@@ -149,7 +148,7 @@ public class FoodOnWheels implements EntryPoint {
 		signInLink.setHref(loginInfo.getLoginUrl());
 		loginPanel.add(loginLabel);
 		loginPanel.add(signInLink);
-		RootPanel.get("foodTruckList").add(loginPanel);
+		//RootPanel.get("foodTruckList").add(loginPanel);
 	}
 	
 	private void loadFoodTruckData() {
@@ -245,7 +244,7 @@ public class FoodOnWheels implements EntryPoint {
 		panel.selectTab(0);
 
 		panel.setSize("500px", "250px");
-		panel.addStyleName("table-center");
-		RootPanel.get().add(panel);
+		panel.addStyleName("TableStyle");
+		RootPanel.get("foodTruckList").add(panel);
 	}
 }
