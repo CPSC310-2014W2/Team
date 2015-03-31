@@ -33,6 +33,7 @@ public class FoodCartMap {
 	private final FoodTruckServiceAsync foodTruckService = 
 			GWT.create(FoodTruckService.class);
 	private MapWidget currentMap;
+	LatLng userPos = null;
 	
 	
 	//new icon to display user on map
@@ -139,6 +140,8 @@ public class FoodCartMap {
 				LatLng userLocation = LatLng.newInstance(userLoc.getLatitude(), userLoc.getLongitude());
 				map.addOverlay(new Marker(userLocation, userDisplay));
 				
+				userPos = userLocation;
+				
 				 
 			}
 		});
@@ -177,6 +180,12 @@ public class FoodCartMap {
 		
 			
 	}
+	
+	
+	//Returns cart distance from user
+	public double distanceFromUser(FoodTruckData cart){
+		final LatLng cartLatLng =LatLng.newInstance(cart.getLatitude(), cart.getLongitude());		
+		return userPos.distanceFrom(cartLatLng);}
 	
 
 }
