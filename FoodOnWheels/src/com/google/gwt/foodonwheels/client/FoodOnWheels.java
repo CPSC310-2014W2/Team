@@ -70,7 +70,7 @@ public class FoodOnWheels implements EntryPoint {
 
 	// private HorizontalPanel mainPanel = new HorizontalPanel();
 	private VerticalPanel truckListPanel = new VerticalPanel();
-	private Button fetchTruckListButton = new Button("fetch YELP data");
+	private Button fetchTruckListButton = new Button("get data from provider");
 	private HorizontalPanel searchPanel = new HorizontalPanel();
 	private Label searchLabel = new Label("Search food trucks by name:");
 	private SearchTextBox filterBox = new SearchTextBox();
@@ -143,7 +143,10 @@ public class FoodOnWheels implements EntryPoint {
 			public void onSuccess(LoginInfo result) {
 				loginInfo = result;
 				if (loginInfo.isLoggedIn()) {
-					setUserView();
+					if (loginInfo.isUserAdmin())
+						setAdminView();
+					else
+						setUserView();
 				} else {
 					loadLogin();
 				}
@@ -304,9 +307,8 @@ public class FoodOnWheels implements EntryPoint {
 					}
 				});
 	}
-
-	private void setUserView() {
-		// Push the data into the widget.
+	
+	private void setAdminView() {
 		truckListPanel.add(fetchTruckListButton);
 		// Listen for mouse events on the fetch YELP data button.
 		fetchTruckListButton.addClickHandler(
@@ -315,7 +317,10 @@ public class FoodOnWheels implements EntryPoint {
 						fetchDataFromProvider();
 					};
 				});
+		setUserView();
+	}
 
+	private void setUserView() {
 		loadFoodTruckData();
 		setTruckListPanel();
 	}
