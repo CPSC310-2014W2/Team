@@ -352,7 +352,6 @@ public class FoodOnWheels implements EntryPoint {
 
 			truckDataProvider.setList(closeByTrucks);
 		} catch (NumberFormatException e) {
-			// TODO Auto-generated catch block
 			Window.alert("Please enter a valid number as the distance limit!");
 			closeByBox.setText("");
 			truckDataProvider.setList(allTrucks);
@@ -389,13 +388,11 @@ public class FoodOnWheels implements EntryPoint {
 
 							@Override
 							public void onFailure(Throwable caught) {
-								// TODO Auto-generated method stub
 								Window.alert("Save fail.");
 							}
 
 							@Override
 							public void onSuccess(List<FoodTruckData> result) {
-								// TODO Auto-generated method stub
 								FavTruckDataProvider.setList(result);
 							}
 

@@ -34,7 +34,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 
 	@Override
 	public void addFoodTruck(String name, String address) {
-		// TODO Auto-generated method stub
 		PersistenceManager pm = getPersistenceManager();
 		try {
 			pm.makePersistent(new FoodTruck(name, address));
@@ -46,7 +45,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 
 	@Override
 	public List<String> getFoodTruckList() {
-		// TODO Auto-generated method stub
 		PersistenceManager pm = getPersistenceManager();
 		List<String> symbols = new ArrayList<String>();
 		try {
@@ -57,13 +55,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 				FoodTruck truck = iter.next();
 				symbols.add(truck.getName() +", " + truck.getAddress());
 			}
-			//			Query q = pm.newQuery(FoodTruck.class);
-			//			q.declareParameters("com.google.appengine.api.users.User u");
-			//			q.setOrdering("createDate");
-			//			List<FoodTruck> trucks = (List<FoodTruck>) q.execute();
-			//			for (FoodTruck truck : trucks) {
-			//				symbols.add(truck.getName() + " " + truck.getAddress());
-			//			}
 		} finally {
 			pm.close();
 		}
@@ -76,14 +67,12 @@ extends RemoteServiceServlet implements FoodTruckService {
 
 	@Override
 	public void fetchFoodTruckDataFromYelp() {
-		// TODO Auto-generated method stub
 		FourSquareAPI fourSquare = new FourSquareAPI();
 		String response = fourSquare.searchForFoodTrucksInVancouver();
 		FourSquareVenueSearchParser p = new FourSquareVenueSearchParser();
 		try {
 			p.parse(response);
 		} catch (ParseException e1) {
-			// TODO Auto-generated catch block
 			e1.printStackTrace();
 		}
 		YelpAPI yelp = new YelpAPI();
@@ -92,7 +81,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 		try {
 			parser.parse(searchResponseJSON);
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 
@@ -100,7 +88,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 
 	@Override
 	public void fetchFoodTruckDataFromFourSquare() {
-		// TODO Auto-generated method stub
 		FourSquareAPI fourSquare = new FourSquareAPI();
 		String response = fourSquare.searchForFoodTrucksInDowntown();
 		FourSquareVenueSearchParser p = new FourSquareVenueSearchParser();
@@ -111,8 +98,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 				pm.makePersistent(truck);
 			}
 		} catch (ParseException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
 		} finally {
 			pm.close();
 		}
@@ -120,7 +105,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 
 	@Override
 	public List<FoodTruckData> getFoodTruckDataList() {
-		// TODO Auto-generated method stub
 		PersistenceManager pm = getPersistenceManager();
 		List<FoodTruckData> truckData = new ArrayList<FoodTruckData>();
 		try {
@@ -131,13 +115,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 				FoodTruck truck = iter.next();
 				truckData.add(truck.convert());
 			}
-			//			Query q = pm.newQuery(FoodTruck.class);
-			//			q.declareParameters("com.google.appengine.api.users.User u");
-			//			q.setOrdering("createDate");
-			//			List<FoodTruck> trucks = (List<FoodTruck>) q.execute();
-			//			for (FoodTruck truck : trucks) {
-			//				symbols.add(truck.getName() + " " + truck.getAddress());
-			//			}
 		} finally {
 			pm.close();
 		}
@@ -146,7 +123,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 
 	@Override
 	public List<FoodTruckData> getFoodTruckFilterName(String name) {
-		// TODO Auto-generated method stub
 		PersistenceManager pm = getPersistenceManager();
 		Query query = pm.newQuery(
 				"SELECT FROM com.google.gwt.foodonwheels.server.FoodTruck " +
@@ -168,7 +144,6 @@ extends RemoteServiceServlet implements FoodTruckService {
 
 	@Override
 	public List<FoodTruckData> favFoodTruck(FoodTruckData truck) {
-		// TODO Auto-generated method stub
 		PersistenceManager pm = getPersistenceManager();
 		if(truck != null){
 			FavFoodTruck fav = new FavFoodTruck(truck);
