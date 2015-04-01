@@ -49,12 +49,12 @@ public class FoodOnWheels implements EntryPoint {
 
 	// Search panel and parts
 	private HorizontalPanel searchPanel = new HorizontalPanel();
-	private Label searchLabel = new Label("Search food trucks by name:");
+	private Label searchLabel = new Label("Search food trucks by name: ");
 	private SearchTextBox filterBox = new SearchTextBox();
 	private TabLayoutPanel tabLayout = new TabLayoutPanel(2.5, Unit.EM);
 
 	private HorizontalPanel closeByPanel = new HorizontalPanel();
-	private Label closeByLabel = new Label("Limit distance (m) to within:");
+	private Label closeByLabel = new Label("Limit distance (m) to within: ");
 	private TextBox closeByBox = new TextBox();
 	private Button closeByButton = new Button("Apply");
 
