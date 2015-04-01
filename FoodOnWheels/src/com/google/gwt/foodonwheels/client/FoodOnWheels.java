@@ -23,6 +23,7 @@ import com.google.gwt.user.client.ui.Label;
 import com.google.gwt.user.client.ui.RootPanel;
 import com.google.gwt.user.client.ui.TabLayoutPanel;
 import com.google.gwt.user.client.ui.ScrollPanel;
+import com.google.gwt.user.client.ui.TextBox;
 import com.google.gwt.user.client.ui.VerticalPanel;
 import com.google.gwt.view.client.SelectionChangeEvent;
 import com.google.gwt.view.client.SingleSelectionModel;
@@ -44,12 +45,18 @@ public class FoodOnWheels implements EntryPoint {
 	private VerticalPanel truckListPanel = new VerticalPanel();
 	// Button for admin to get data into app engine
 	private Button fetchTruckListButton = new Button("get data from provider");
+	private List<FoodTruckData> allTrucks;
 
 	// Search panel and parts
 	private HorizontalPanel searchPanel = new HorizontalPanel();
 	private Label searchLabel = new Label("Search food trucks by name:");
 	private SearchTextBox filterBox = new SearchTextBox();
 	private TabLayoutPanel tabLayout = new TabLayoutPanel(2.5, Unit.EM);
+
+	private HorizontalPanel closeByPanel = new HorizontalPanel();
+	private Label closeByLabel = new Label("Limit distance (m) to within:");
+	private TextBox closeByBox = new TextBox();
+	private Button closeByButton = new Button("Apply");
 
 	// Food truck table and parts
 	final SingleSelectionModel<FoodTruckData> 
@@ -268,6 +275,7 @@ public class FoodOnWheels implements EntryPoint {
 					@Override
 					public void onSuccess(List<FoodTruckData> result) {
 						truckDataProvider.setList(result);
+						allTrucks = result;
 						setUpTruckCellTable();
 					}
 				});
@@ -295,6 +303,19 @@ public class FoodOnWheels implements EntryPoint {
 		searchPanel.add(searchLabel);
 		searchPanel.add(filterBox);
 		truckListPanel.add(searchPanel);
+
+		closeByPanel.add(closeByLabel);
+		closeByPanel.add(closeByBox);
+		
+		closeByButton.addClickHandler(new ClickHandler(){
+			@Override
+			public void onClick(ClickEvent event) {
+				applyCloseByLimit();
+			}
+		});
+		closeByPanel.add(closeByButton);
+		truckListPanel.add(closeByPanel);
+
 		scrollPanel.setSize("430px", "300px");
 		favScrollPanel.setSize("430px", "300px");
 
@@ -316,6 +337,26 @@ public class FoodOnWheels implements EntryPoint {
 
 		// Add it to the root panel.
 		RootPanel.get("foodTruckList").add(truckListPanel);
+	}
+
+	private void applyCloseByLimit() {
+		String input = closeByBox.getText();
+		if (input == null || input.equalsIgnoreCase("")) {
+			truckDataProvider.setList(allTrucks);
+			return;
+		}
+		try {
+			double limit = Double.parseDouble(input);
+			List<FoodTruckData> 
+			closeByTrucks = cartMap.showCloseByTrucks(allTrucks, limit);
+
+			truckDataProvider.setList(closeByTrucks);
+		} catch (NumberFormatException e) {
+			// TODO Auto-generated catch block
+			Window.alert("Please enter a valid number as the distance limit!");
+			closeByBox.setText("");
+			truckDataProvider.setList(allTrucks);
+		}
 	}
 
 	/**
