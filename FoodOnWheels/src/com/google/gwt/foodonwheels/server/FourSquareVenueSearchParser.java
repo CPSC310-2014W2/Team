@@ -52,15 +52,6 @@ public class FourSquareVenueSearchParser {
 				if (formattedAddress.equalsIgnoreCase(" "))
 					formattedAddress = "Unknown Address";
 				
-//				if (location.get("address") != null) {
-//					address = location.get("address").toString();
-//				} else {
-//					if (location.get("crossStreet") != null)
-//						address = location.get("crossStreet").toString();
-//					else
-//						address = "Unknown Address";
-//				}
-				
 				double lat = Double.parseDouble(location.get("lat").toString());
 				double lng = Double.parseDouble(location.get("lng").toString());
 				
@@ -68,7 +59,6 @@ public class FourSquareVenueSearchParser {
 						lat, lng, url, userCounts, 0));
 			}
 		} catch (Exception e) {
-			// TODO Auto-generated catch block
 			throw new ParseException(ParseException.ERROR_UNEXPECTED_EXCEPTION);
 		}
 

@@ -13,7 +13,6 @@ public class FourSquareAPI {
 	private static final String FOOD_TRUCK = "4bf58dd8d48988d1cb941735";
 	private static final String DEFAULT_LOCATION = "Vancouver,BC";
 	private static final String DEFAULT_VERSION = "20150328";
-	private static final String DEFAULT_MODE = "foursquare";
 	private static final String NUMBER_OF_RESULTS = Integer.toString(50);
 	private static final String DEFAULT_INTENT = "browse";
 	private static final String NORTHEAST_CORNER = "49.290483,-123.099691";
@@ -53,9 +52,8 @@ public class FourSquareAPI {
 		request.addQuerystringParameter("categoryId", FOOD_TRUCK);
 		request.addQuerystringParameter("limit", NUMBER_OF_RESULTS);
 		
-		// Set the version and mode of the FourSquare API.
+		// Set the version of the FourSquare API.
 		request.addQuerystringParameter("v", DEFAULT_VERSION);
-//		request.addQuerystringParameter("m", DEFAULT_MODE);
 		
 		Response response = request.send();
 		return response.getBody();
@@ -70,7 +68,6 @@ public class FourSquareAPI {
 		request.addQuerystringParameter("categoryId", FOOD_TRUCK);
 		request.addQuerystringParameter("limit", NUMBER_OF_RESULTS);
 		request.addQuerystringParameter("v", DEFAULT_VERSION);
-//		request.addQuerystringParameter("m", DEFAULT_MODE);
 		Response response = request.send();
 		return response.getBody();
 	}
