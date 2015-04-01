@@ -171,8 +171,8 @@ extends RemoteServiceServlet implements FoodTruckService {
 		// TODO Auto-generated method stub
 		PersistenceManager pm = getPersistenceManager();
 		if(truck != null){
-		FavFoodTruck fav = new FavFoodTruck(truck);
-		pm.makePersistent(fav);
+			FavFoodTruck fav = new FavFoodTruck(truck);
+			pm.makePersistent(fav);
 		}
 		List<FoodTruckData> trucks = new ArrayList<FoodTruckData>();
 		UserService userService = UserServiceFactory.getUserService();

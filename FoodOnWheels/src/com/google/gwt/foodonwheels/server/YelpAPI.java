@@ -21,7 +21,6 @@ import org.scribe.oauth.OAuthService;
 public class YelpAPI {
 
 	private static final String API_HOST = "api.yelp.com";
-	private static final String DEFAULT_TERM = "dinner";
 	private static final String DEFAULT_CATEGORY = "foodtrucks";
 	private static final String DEFAULT_LOCATION = "Downtown, Vancouver, BC";
 	private static final int RESULT_LIMIT = 20;

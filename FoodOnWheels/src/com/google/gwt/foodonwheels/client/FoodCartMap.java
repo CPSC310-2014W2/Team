@@ -1,19 +1,15 @@
 package com.google.gwt.foodonwheels.client;
 
-import java.util.ArrayList;
 import java.util.List;
 
 import com.google.gwt.core.client.Callback;
-import com.google.gwt.core.client.EntryPoint;
 import com.google.gwt.core.client.GWT;
 import com.google.gwt.foodonwheels.shared.FoodTruckData;
 import com.google.gwt.geolocation.client.Geolocation;
 import com.google.gwt.geolocation.client.Position;
 import com.google.gwt.geolocation.client.PositionError;
-import com.google.gwt.maps.client.InfoWindow;
 import com.google.gwt.maps.client.InfoWindowContent;
 import com.google.gwt.maps.client.MapWidget;
-import com.google.gwt.maps.client.Maps;
 import com.google.gwt.maps.client.control.LargeMapControl;
 import com.google.gwt.maps.client.event.MarkerClickHandler;
 import com.google.gwt.maps.client.geom.LatLng;
@@ -89,13 +85,11 @@ public class FoodCartMap {
 
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
 
 			}
 
 			@Override
 			public void onSuccess(List<FoodTruckData> result) {
-				// TODO Auto-generated method stub
 				for (int k = 0; k < result.size(); k++){
 					final LatLng cartLatLng =LatLng.newInstance(result.get(k).getLatitude(), result.get(k).getLongitude());
 					Marker cartMarker = new Marker(cartLatLng);
@@ -104,7 +98,6 @@ public class FoodCartMap {
 						cartMarker.addMarkerClickHandler(new MarkerClickHandler(){
 						@Override
 						public void onClick(MarkerClickEvent event) {
-							// TODO Auto-generated method stub						 
 							 map.getInfoWindow().open(cartLatLng, cartDescription);
 						}
 					});
@@ -121,7 +114,6 @@ public class FoodCartMap {
 
 			@Override
 			public void onFailure(PositionError reason) {
-				// TODO Auto-generated method stub
 
 			}
 

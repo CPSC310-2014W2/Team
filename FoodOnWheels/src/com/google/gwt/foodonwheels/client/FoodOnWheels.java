@@ -42,25 +42,35 @@ public class FoodOnWheels implements EntryPoint {
 			+ "connection and try again.";
 
 	private VerticalPanel truckListPanel = new VerticalPanel();
+	// Button for admin to get data into app engine
 	private Button fetchTruckListButton = new Button("get data from provider");
-	private Button saveButton = new Button("Save");
+
+	// Search panel and parts
 	private HorizontalPanel searchPanel = new HorizontalPanel();
 	private Label searchLabel = new Label("Search food trucks by name:");
 	private SearchTextBox filterBox = new SearchTextBox();
 	private TabLayoutPanel tabLayout = new TabLayoutPanel(2.5, Unit.EM);
 
-	final SingleSelectionModel<FoodTruckData> selectionModel = new SingleSelectionModel<FoodTruckData>();
-	private CellTable<FoodTruckData> truckCellTable = new CellTable<FoodTruckData>(50);
-	private CellTable<FoodTruckData> FavCellTable = new CellTable<FoodTruckData>(50);
+	// Food truck table and parts
+	final SingleSelectionModel<FoodTruckData> 
+	selectionModel = new SingleSelectionModel<FoodTruckData>();
+	private CellTable<FoodTruckData> 
+	truckCellTable = new CellTable<FoodTruckData>(50);
 	private ScrollPanel scrollPanel = new ScrollPanel(truckCellTable);
-	private ScrollPanel favScrollPanel = new ScrollPanel(FavCellTable);
 
-	private Label lastUpdatedLabel = new Label();
+	// Favourite table and parts
+	private CellTable<FoodTruckData> 
+	FavCellTable = new CellTable<FoodTruckData>(50);
+	private ScrollPanel favScrollPanel = new ScrollPanel(FavCellTable);
+	private Button saveButton = new Button("Save");
+
+	// Login interface and parts
 	private LoginInfo loginInfo = null;
 	private VerticalPanel loginPanel = new VerticalPanel();
 	private Anchor signInLink = new Anchor("Sign In");
 	private Anchor signOutLink = new Anchor("Sign Out");
-	private Label loginLabel = new Label("Sign in to customize your favourite food vendors list!");
+	private Label loginLabel = new Label("Sign in to customize your favourite "
+			+ "food vendors list!");
 
 
 	//Needed to create FoodCartMap object
@@ -69,20 +79,14 @@ public class FoodOnWheels implements EntryPoint {
 	/**
 	 * Remote remote service proxy to talk to the server-side FoodTruckService
 	 */
+	private final FoodTruckServiceAsync	
+	foodTruckService = GWT.create(FoodTruckService.class);
 
-	private final FoodTruckServiceAsync	foodTruckService = GWT.create(FoodTruckService.class);
 
-
-	private final FilteredListDataProvider<FoodTruckData> truckDataProvider = new FilteredListDataProvider<FoodTruckData>(
+	private final FilteredListDataProvider<FoodTruckData> 
+	truckDataProvider = new FilteredListDataProvider<FoodTruckData>(
 			new IFilter<FoodTruckData>() {
-				/* (non-Javadoc)
-				 * @see com.google.gwt.foodonwheels.client.IFilter#
-				 * isValid(java.lang.Object, java.lang.String)
-				 * 
-				 * A FoodTruckData object is valid if its name contains
-				 * the search keyword.
-				 */
-
+				// Return true if name contains the keyword
 				@Override
 				public boolean isValid(FoodTruckData value, String keyword) {
 					if(keyword==null || value==null) {
@@ -96,16 +100,9 @@ public class FoodOnWheels implements EntryPoint {
 				}
 			});
 
-	private final FilteredListDataProvider<FoodTruckData> FavTruckDataProvider = new FilteredListDataProvider<FoodTruckData>(
+	private final FilteredListDataProvider<FoodTruckData> 
+	FavTruckDataProvider = new FilteredListDataProvider<FoodTruckData>(
 			new IFilter<FoodTruckData>() {
-				/* (non-Javadoc)
-				 * @see com.google.gwt.foodonwheels.client.IFilter#
-				 * isValid(java.lang.Object, java.lang.String)
-				 * 
-				 * A FoodTruckData object is valid if its name contains
-				 * the search keyword.
-				 */
-
 				@Override
 				public boolean isValid(FoodTruckData value, String keyword) {
 					if(keyword==null || value==null) {
@@ -125,14 +122,17 @@ public class FoodOnWheels implements EntryPoint {
 	 */
 	public void onModuleLoad() {
 		//Needed to load map
-		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false, new Runnable() {
+		Maps.loadMapsApi("AIzaSyCRBwxpSxylsp96KCX96xRHUQxrY6e653I", "2", false, 
+				new Runnable() {
 			public void run() {
 				cartMap.buildUi();
-			}});
+			}
+		});
 
 		// Check login status using login service.
 		LoginServiceAsync loginService = GWT.create(LoginService.class);
-		loginService.login(GWT.getHostPageBaseURL(), new AsyncCallback<LoginInfo>() {
+		loginService.login(GWT.getHostPageBaseURL(), 
+				new AsyncCallback<LoginInfo>() {
 			public void onFailure(Throwable error) {
 				Window.alert(SERVER_ERROR);
 			}
@@ -149,20 +149,18 @@ public class FoodOnWheels implements EntryPoint {
 				}
 			}
 		});
-		foodTruckService.favFoodTruck(null, new AsyncCallback<List<FoodTruckData>>(){
 
+		foodTruckService.favFoodTruck(null, 
+				new AsyncCallback<List<FoodTruckData>>(){
 			@Override
 			public void onFailure(Throwable caught) {
-				// TODO Auto-generated method stub
-				Window.alert("Save fail.");
+				Window.alert(SERVER_ERROR);
 			}
 
 			@Override
 			public void onSuccess(List<FoodTruckData> result) {
-				// TODO Auto-generated method stub
 				FavTruckDataProvider.setList(result);
 			}
-			
 		});
 	}
 
@@ -216,7 +214,7 @@ public class FoodOnWheels implements EntryPoint {
 				return o1.getName().compareTo(o2.getName());
 			}
 		});
-		truckCellTable.addColumn(nameColumn, "Food Truck Name");
+		truckCellTable.addColumn(nameColumn, "Food Vendor Name");
 
 		// Add a text column to show the number of user check in.
 		TextColumn<FoodTruckData> 
@@ -239,22 +237,19 @@ public class FoodOnWheels implements EntryPoint {
 				return Integer.signum(diff);
 			}
 		});
-		truckCellTable.addColumn(userCountColumn,"Check In Count");
+		truckCellTable.addColumn(userCountColumn,"Checkin Count");
 
 		// Add a selection model to handle user selection.
-
 		truckCellTable.setSelectionModel(selectionModel);
 
 		selectionModel.addSelectionChangeHandler(
 				new SelectionChangeEvent.Handler() {
-
 					@Override
 					public void onSelectionChange(SelectionChangeEvent event) {
 						FoodTruckData 
 						selected = selectionModel.getSelectedObject();
 
 						if (selected != null) {
-							//		Window.alert("You selected: " + selected);
 							cartMap.openNewInfoWindow(selected);
 
 						}
@@ -292,26 +287,27 @@ public class FoodOnWheels implements EntryPoint {
 
 	private void setUserView() {
 		loadFoodTruckData();
-		setTruckListPanel();
 		setUpFavCellTable();
+		setTruckListPanel();
 	}
 
 	private void setTruckListPanel() {
 		searchPanel.add(searchLabel);
 		searchPanel.add(filterBox);
 		truckListPanel.add(searchPanel);
-		scrollPanel.setSize("500px", "400px");
+		scrollPanel.setSize("430px", "300px");
+		favScrollPanel.setSize("430px", "300px");
+
 		VerticalPanel panel = new VerticalPanel();
 		panel.add(scrollPanel);
 		panel.add(saveButton);
-		tabLayout.add(scrollPanel, "All Food Vendors");
+		tabLayout.add(panel, "All Food Vendors");
+
 		tabLayout.add(favScrollPanel, "Favourites");
-		tabLayout.setAnimationDuration(1000);
+		tabLayout.setAnimationDuration(200);
 		tabLayout.getElement().getStyle().setMargin(10, Unit.PX);
-		tabLayout.setSize("500px", "500px");
+		tabLayout.setSize("530px", "400px");
 		truckListPanel.add(tabLayout);
-		//		truckListPanel.add(truckCellList);
-		truckListPanel.add(lastUpdatedLabel);
 
 
 		// Set up sign out hyperlink.
@@ -348,21 +344,21 @@ public class FoodOnWheels implements EntryPoint {
 				new ClickHandler() {
 					public void onClick(ClickEvent event) {
 						FoodTruckData selected = selectionModel.getSelectedObject();
-					foodTruckService.favFoodTruck(selected, new AsyncCallback<List<FoodTruckData>>(){
+						foodTruckService.favFoodTruck(selected, new AsyncCallback<List<FoodTruckData>>(){
 
-						@Override
-						public void onFailure(Throwable caught) {
-							// TODO Auto-generated method stub
-							Window.alert("Save fail.");
-						}
+							@Override
+							public void onFailure(Throwable caught) {
+								// TODO Auto-generated method stub
+								Window.alert("Save fail.");
+							}
 
-						@Override
-						public void onSuccess(List<FoodTruckData> result) {
-							// TODO Auto-generated method stub
-							FavTruckDataProvider.setList(result);
-						}
-						
-					});
+							@Override
+							public void onSuccess(List<FoodTruckData> result) {
+								// TODO Auto-generated method stub
+								FavTruckDataProvider.setList(result);
+							}
+
+						});
 					};
 				});
 
@@ -406,7 +402,7 @@ public class FoodOnWheels implements EntryPoint {
 		TextColumn<FoodTruckData> userCountColumn = new TextColumn<FoodTruckData>() {
 			@Override
 			public String getValue(FoodTruckData object) {
-				return object.getCount();
+				return String.valueOf(object.getRank());
 			}
 		};
 		userCountColumn.setSortable(true);
@@ -421,7 +417,7 @@ public class FoodOnWheels implements EntryPoint {
 				return Integer.signum(diff);
 			}
 		});
-		FavCellTable.addColumn(userCountColumn,"Check In Count");
+		FavCellTable.addColumn(userCountColumn,"Rank");
 
 		// Add a selection model to handle user selection.
 		final SingleSelectionModel<FoodTruckData> selectionModel = new SingleSelectionModel<FoodTruckData>();

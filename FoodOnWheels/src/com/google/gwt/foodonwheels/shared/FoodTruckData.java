@@ -4,9 +4,10 @@ import java.io.Serializable;
 
 public class FoodTruckData implements Serializable {
 	/**
-	 * 
+	 * Default serial version UID
 	 */
 	private static final long serialVersionUID = 1L;
+	
 	private static final int UNDEFINED_RANK = 0;
 	private String name;
 	private String address;

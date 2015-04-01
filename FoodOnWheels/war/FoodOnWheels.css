@@ -1,12 +1,12 @@
 /** Add css rules here for your application. */
 
+
 /** Example rules used by the template application (remove for your app) */
 h1 {
   font-size: 2em;
   font-weight: bold;
   color: #777777;
   margin: 40px 0px 70px;
-  text-shadow: 5px 5px 5px #D2B48C;
   text-align: center;
 }
 
@@ -63,28 +63,4 @@ h1 {
   background: #ffc782; 
   font-size: 1.2em; 
   color: #FFFFFF; 
-}
-
-.carousel .item {
-	background: #F9F9F9;
-	border: 1px solid #E0E0E0;
-	overflow: hidden;
-}
-
-.carousel-inner>.item>img {
-	border: 1px solid #DDDDDD;
-	float: left;
-	margin: 0pt 3px;
-	height: none;
-	width: 100%;
-}
-
-.carousel-inner>.item>img:hover {
-	border: 1px solid #000000;
-}
-.topright {
-	position: relative;
-	top: 0px;
-	right: 5px;
-	text-align: right;
 }
