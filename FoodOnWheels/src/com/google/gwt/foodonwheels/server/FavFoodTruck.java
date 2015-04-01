@@ -8,10 +8,13 @@ import javax.jdo.annotations.PersistenceCapable;
 import javax.jdo.annotations.Persistent;
 import javax.jdo.annotations.PrimaryKey;
 
+import com.google.appengine.api.users.User;
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.foodonwheels.shared.FoodTruckData;
 
 @PersistenceCapable(identityType = IdentityType.APPLICATION)
-public class FoodTruck implements Serializable {
+public class FavFoodTruck implements Serializable {
 
 	/**
 	 * default serial version ID
@@ -39,43 +42,20 @@ public class FoodTruck implements Serializable {
 	private int userCounts4square;
 	@Persistent
 	private String cuisine;
+	
+	UserService userService = UserServiceFactory.getUserService();
 
+	private User user;
 
-
-	public FoodTruck(String name, String address, 
-			double latitude, double longitude, 
-			String website, String count, 
-			String imageUrl, String cuisine, int rank) {
-		this.name = name;
-		this.address = address;
-		this.latitude = latitude;
-		this.longitude = longitude;
-		this.imageUrl = imageUrl;
-		this.website = website;
-		try {
-			this.userCounts4square = Integer.parseInt(count);
-		} catch (NumberFormatException e) {
-			this.userCounts4square = 0;
-		}
-		this.cuisine = cuisine;
-		this.rank = rank;
+	public FavFoodTruck(FoodTruckData truck){
+		this.name = truck.getName();
+		this.address = truck.getAddress();
+		this.rank = truck.getRank();
+		this.latitude = truck.getLatitude();
+		this.longitude = truck.getLongitude();
+		this.user = userService.getCurrentUser();
 	}
 	
-	public FoodTruck(String name, String address, 
-			double latitude, double longitude, 
-			String website, String count, int rank) {
-		this(name, address, latitude, longitude, website, count, "", "", 0);
-	}
-
-	public FoodTruck(String name, String address, 
-			double latitude, double longitude) {
-		this(name, address, latitude, longitude, "", "", "", "", 0);
-	}
-
-	public FoodTruck(String name, String address) {
-		this(name, address, 0, 0);
-	}
-
 	public FoodTruckData convert() {
 		String name = this.getName();
 		String address = this.getAddress();

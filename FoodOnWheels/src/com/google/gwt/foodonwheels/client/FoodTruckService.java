@@ -19,4 +19,6 @@ public interface FoodTruckService extends RemoteService {
 	void fetchFoodTruckDataFromYelp();
 	
 	void fetchFoodTruckDataFromFourSquare();
+
+	List<FoodTruckData> favFoodTruck(FoodTruckData truck);
 }

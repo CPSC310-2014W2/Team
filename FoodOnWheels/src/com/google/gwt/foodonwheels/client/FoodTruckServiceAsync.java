@@ -20,4 +20,7 @@ public interface FoodTruckServiceAsync {
 	void getFoodTruckFilterName(String name,
 			AsyncCallback<List<FoodTruckData>> callback);
 
+	void favFoodTruck(FoodTruckData truck,
+			AsyncCallback<List<FoodTruckData>> callback);
+
 }

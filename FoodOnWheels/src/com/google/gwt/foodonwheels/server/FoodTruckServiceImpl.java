@@ -13,6 +13,8 @@ import javax.jdo.Query;
 
 import org.json.simple.parser.ParseException;
 
+import com.google.appengine.api.users.UserService;
+import com.google.appengine.api.users.UserServiceFactory;
 import com.google.gwt.foodonwheels.client.FoodTruckService;
 import com.google.gwt.foodonwheels.shared.FoodTruckData;
 import com.google.gwt.user.server.rpc.RemoteServiceServlet;
@@ -93,31 +95,7 @@ extends RemoteServiceServlet implements FoodTruckService {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
-		//		JSONParser parser = new JSONParser();
-		//		JSONObject response = null;
-		//		try {
-		//			response = (JSONObject) parser.parse(searchResponseJSON);
-		//		} catch (ParseException pe) {
-		//			System.out.println("Error: could not parse JSON response:");
-		//			System.out.println(searchResponseJSON);
-		//			System.exit(1);
-		//		}
-		//		
-		//		JSONArray businesses = (JSONArray) response.get("businesses");
-		//		for(Object business : businesses) {
-		//			JSONObject b = (JSONObject) business;
-		//			String name = b.get("name").toString();
-		//			JSONObject addrJSON = (JSONObject) b.get("location");
-		//			JSONArray addrArray = (JSONArray) addrJSON.get("address");
-		//			String address = addrArray.get(0).toString();
-		//			
-		//			PersistenceManager pm = getPersistenceManager();
-		//			try {
-		//				pm.makePersistent(new FoodTruck(name, address));
-		//			} finally {
-		//				pm.close();
-		//			}
-		//		}
+
 	}
 
 	@Override
@@ -173,10 +151,10 @@ extends RemoteServiceServlet implements FoodTruckService {
 		Query query = pm.newQuery(
 				"SELECT FROM com.google.gwt.foodonwheels.server.FoodTruck " +
 				"WHERE :name.toUpperCase().startsWith(this.abbrev)");
-		
+
 		List<FoodTruck> results = 
 				(List<FoodTruck>) query.execute(name.toUpperCase());
-		
+
 		List<FoodTruckData> truckData = new ArrayList<FoodTruckData>();
 		Iterator<FoodTruck> iter = results.iterator();
 		while (iter.hasNext())
@@ -184,10 +162,30 @@ extends RemoteServiceServlet implements FoodTruckService {
 			FoodTruck truck = iter.next();
 			truckData.add(truck.convert());
 		}
-		
+
 		return truckData;
 	}
 
-
-
+	@Override
+	public List<FoodTruckData> favFoodTruck(FoodTruckData truck) {
+		// TODO Auto-generated method stub
+		PersistenceManager pm = getPersistenceManager();
+		if(truck != null){
+		FavFoodTruck fav = new FavFoodTruck(truck);
+		pm.makePersistent(fav);
+		}
+		List<FoodTruckData> trucks = new ArrayList<FoodTruckData>();
+		UserService userService = UserServiceFactory.getUserService();
+		try {
+			Query q = pm.newQuery(FavFoodTruck.class, "user == u");
+			q.declareParameters("com.google.appengine.api.users.User u");
+			List<FavFoodTruck> fa = (List<FavFoodTruck>) q.execute(userService.getCurrentUser());
+			for(FavFoodTruck f : fa){
+				trucks.add(f.convert());
+			}
+		} finally {
+			pm.close();
+		}
+		return trucks;
+	}
 }
