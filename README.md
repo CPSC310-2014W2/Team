@@ -1,5 +1,6 @@
 # Team
-Creaters: April Choi, Graham Lee, Devin Li and Douglas Wong
+
+Creators: April Choi, Graham Lee, Devin Li and Douglas Wong
 
 Website: http://food-on-wheels.appspot.com
 
